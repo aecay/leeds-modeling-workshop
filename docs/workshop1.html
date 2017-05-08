@@ -27,57 +27,67 @@
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide"><h2 class="author">Aaron Ecay</h2><p class="date">Created: 2017-05-08 Mon 02:26</p>
+<section id="sec-title-slide"><h2 class="author">Aaron Ecay</h2><p class="date">Created: 2017-05-08 Mon 11:17</p>
 </section>
 
 <section>
-<section id="slide-orge8cb2c3">
-<h2 id="orge8cb2c3">Introduction</h2>
-<div class="outline-text-2" id="text-orge8cb2c3">
+<section id="slide-org7c7b427">
+<h2 id="org7c7b427">Introduction</h2>
+<div class="outline-text-2" id="text-org7c7b427">
 </div>
 </section>
-<section id="slide-orgd7d3417">
-<h3 id="orgd7d3417"><span class="todo TODO">TODO</span> Pre-intro</h3>
-<p>
-more about goals
-</p>
-</section>
-<section id="slide-org97f54e0">
-<h3 id="org97f54e0">Introduction</h3>
-<div class="outline-text-3" id="text-org97f54e0">
-</div>
-</section>
-<section id="slide-org20284fa">
-<h4 id="org20284fa">What modeling is</h4>
+<section id="slide-org5ba43f9">
+<h3 id="org5ba43f9">Goals of this talk</h3>
 <ul>
-<li>There are a two fundamental ways of looking at statistical modeling</li>
-<li><b>Engineering solution</b> give me the correct answer, it doesnʼt matter how you get there</li>
-<li><b>Scientific solution</b> tell me how the world works</li>
-<li>The tension between these ideas underlies a lot of the groundwork of using statistical models for research</li>
-
-</ul>
-
-</section>
-<section id="slide-org1434fbe">
-<h4 id="org1434fbe">Another way to look at modeling</h4>
+<li class="fragment">Preparation for mixed-effects workshop in June</li>
+<li class="fragment">Provide an overview of topics in mixed-effects modeling</li>
+<li class="fragment">“Zero to sixty”</li>
+<li class="fragment">(unfortunately) not an in-depth tutorial
 <ul>
-<li>Thereʼs another way to look at statistical models, however</li>
-<li>Dodges the tension between the scientific and engineering approaches</li>
-<li>Illuminates some aspects of the structure of modeling problems</li>
-<li>Models as <b>data compression</b></li>
-
-</ul>
-
-</section>
-<section id="slide-org1633cd2">
-<h4 id="org1633cd2">Data compression: the basics</h4>
-<ul>
-<li>One kind of familiar data compression: ZIP files
-<ul>
-<li>Take a computer file, make it smaller</li>
+<li class="fragment">Though we will be interacting with R</li>
 
 </ul></li>
-<li>Letʼs try to develop our own miniature compression scheme</li>
+<li class="fragment">Aim: provide participants with the “lay of the land” in order to ask the right questions</li>
+
+</ul>
+
+</section>
+<section id="slide-org11ca7c8">
+<h3 id="org11ca7c8">Background on modeling</h3>
+<div class="outline-text-3" id="text-org11ca7c8">
+</div>
+</section>
+<section id="slide-org6163a1d">
+<h4 id="org6163a1d">What modeling is</h4>
+<ul>
+<li class="fragment">There are a two fundamental ways of looking at statistical modeling</li>
+<li class="fragment"><b>Engineering solution</b> give me the correct answer, it doesnʼt matter how you get there</li>
+<li class="fragment"><b>Scientific solution</b> tell me how the world works</li>
+<li class="fragment">The tension between these ideas underlies a lot of the groundwork of using statistical models for research</li>
+
+</ul>
+
+</section>
+<section id="slide-orga00b516">
+<h4 id="orga00b516">Another way to look at modeling</h4>
+<ul>
+<li class="fragment">Thereʼs another way to look at statistical models, however</li>
+<li class="fragment">Dodges the tension between the scientific and engineering approaches</li>
+<li class="fragment">Illuminates some aspects of the structure of modeling problems</li>
+<li class="fragment">Models as <b>data compression</b></li>
+
+</ul>
+
+</section>
+<section id="slide-org6dc4cdf">
+<h4 id="org6dc4cdf">Data compression: the basics</h4>
+<ul>
+<li class="fragment">One kind of familiar data compression: ZIP files
+<ul>
+<li class="fragment">Take a computer file, make it smaller</li>
+
+</ul></li>
+<li class="fragment">Letʼs try to develop our own miniature compression scheme</li>
 
 </ul>
 
@@ -127,32 +137,32 @@ Alic<b>y</b>was beginning to get ver<b>e␣</b> tired of sitting b<b>e␣</b> he
 </blockquote>
 
 </section>
-<section id="slide-org96fa79c">
-<h4 id="org96fa79c">Notes</h4>
+<section id="slide-orgfc0e567">
+<h4 id="orgfc0e567">Notes</h4>
 <ul>
-<li>“X” is <b>more likely</b> to appear than “Y” – we are using the language of probability to describe our model</li>
-<li>The model is based on assumptions about the world (the English language) that could turn out to be wrong</li>
-<li>This is a staatistical model!</li>
+<li class="fragment">“X” is <b>more likely</b> to appear than “Y” – we are using the language of probability to describe our model</li>
+<li class="fragment">The model is based on assumptions about the world (the English language) that could turn out to be wrong</li>
+<li class="fragment">This is a staatistical model!</li>
 
 </ul>
 
 </section>
-<section id="slide-org2686ba0">
-<h4 id="org2686ba0">Lossless vs. lossy compression</h4>
+<section id="slide-org0d63971">
+<h4 id="org0d63971">Lossless vs. lossy compression</h4>
 <ul>
-<li>This toy example (as well as the ZIP file format) are examples of lossless compression – you can recover the original data with perfect fidelity</li>
-<li>Not all compression is lossless; some is lossy</li>
+<li class="fragment">This toy example (as well as the ZIP file format) are examples of lossless compression – you can recover the original data with perfect fidelity</li>
+<li class="fragment">Not all compression is lossless; some is lossy</li>
 
 </ul>
 
 </section>
-<section id="slide-org5356590">
-<h4 id="org5356590">Lossy compression example</h4>
+<section id="slide-orgf7f0a4d">
+<h4 id="orgf7f0a4d">Lossy compression example</h4>
 <ul>
-<li>A familiar example of a lossy compression format is JPEG images</li>
-<li>Not all the information your eye sees is in the image file</li>
-<li>JPEG has a model of how images look</li>
-<li>When the world doesnʼt line up to this model, the result looks bad</li>
+<li class="fragment">A familiar example of a lossy compression format is JPEG images</li>
+<li class="fragment">Not all the information your eye sees is in the image file</li>
+<li class="fragment">JPEG has a model of how images look</li>
+<li class="fragment">When the world doesnʼt line up to this model, the result looks bad</li>
 
 </ul>
 
@@ -168,36 +178,31 @@ Alic<b>y</b>was beginning to get ver<b>e␣</b> tired of sitting b<b>e␣</b> he
 </section>
 </section>
 <section>
-<section id="slide-org2dae435">
-<h2 id="org2dae435">Compression and models</h2>
-<div class="outline-text-2" id="text-org2dae435">
+<section id="slide-org8187896">
+<h2 id="org8187896">Compression and models</h2>
+<div class="outline-text-2" id="text-org8187896">
 </div>
 </section>
-<section id="slide-org316a317">
-<h3 id="org316a317">Compression and models</h3>
-<div class="outline-text-3" id="text-org316a317">
-</div>
-</section>
-<section id="slide-org0451166">
-<h4 id="org0451166">Lossy compression and models</h4>
+<section id="slide-org5007d45">
+<h3 id="org5007d45">Lossy compression and models</h3>
 <ul>
-<li>The kinds of statistical models weʼll be talking about in these seminars are lossy</li>
-<li>They divide the information in the data into two parts
+<li class="fragment">The kinds of statistical models weʼll be talking about in these seminars are lossy</li>
+<li class="fragment">They divide the information in the data into two parts
 <ul>
-<li>Parameters</li>
-<li>Residuals</li>
+<li class="fragment">Parameters</li>
+<li class="fragment">Residuals</li>
 
 </ul></li>
-<li>R<sup>2</sup> is a measure of how much of the variance in the data is explained by the parameters</li>
+<li class="fragment">R<sup>2</sup> is a measure of how much of the variance in the data is explained by the parameters</li>
 
 </ul>
 
 </section>
-<section id="slide-org239892d">
-<h4 id="org239892d">Exercise 1</h4>
+<section id="slide-org97f1bd0">
+<h3 id="org97f1bd0">Exercise 1</h3>
 <ul>
-<li>Open up R on your machine</li>
-<li>Run this code:</li>
+<li class="fragment">Open up R on your machine</li>
+<li class="fragment">Run this code:</li>
 
 </ul>
 
@@ -210,77 +215,77 @@ runGitHub<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"ae
 </div>
 
 </section>
-<section id="slide-org2f5fce6">
-<h4 id="org2f5fce6">What are we doing?</h4>
+<section id="slide-org91ea4de">
+<h3 id="org91ea4de">What are we doing?</h3>
 <ul>
-<li>Dataset of reaction times in a lexical decision task, from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278621/">the British Lexicon Project</a>.</li>
-<li>Random subset of 500 words (to keep computations managable)</li>
-<li>Predictors:
+<li class="fragment">Dataset of reaction times in a lexical decision task, from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278621/">the British Lexicon Project</a>.</li>
+<li class="fragment">Random subset of 500 words (to keep computations managable)</li>
+<li class="fragment">Predictors:
 <dl style="font-size:30%">
-<dt>lexicality</dt><dd>word or non-word</dd>
-<dt>nletters</dt><dd>number of letters in the stimulus</dd>
-<dt>subtlex.frequency</dt><dd>frequency of the stimulus in the SUBTLEX corpus</dd>
-<dt>summed.bigram</dt><dd>sum of bigram frequencies in the word</dd>
-<dt>OLD20</dt><dd>a measure of neighborhood density</dd>
-<dt>part3</dt><dd>remainder when dividing the participantʼs study ID by 3</dd>
-<dt>lett.odd</dt><dd>did the word start with an odd-numbered letter of the alphabet</dd>
+<dt class="fragment">lexicality</dt><dd class="fragment">word or non-word</dd>
+<dt class="fragment">nletters</dt><dd class="fragment">number of letters in the stimulus</dd>
+<dt class="fragment">subtlex.frequency</dt><dd class="fragment">frequency of the stimulus in the SUBTLEX corpus</dd>
+<dt class="fragment">summed.bigram</dt><dd class="fragment">sum of bigram frequencies in the word</dd>
+<dt class="fragment">OLD20</dt><dd class="fragment">a measure of neighborhood density</dd>
+<dt class="fragment">part3</dt><dd class="fragment">remainder when dividing the participantʼs study ID by 3</dd>
+<dt class="fragment">lett.odd</dt><dd class="fragment">did the word start with an odd-numbered letter of the alphabet</dd>
 
 </dl></li>
-<li>See what you can come up with&#x2026;</li>
+<li class="fragment">See what you can come up with&#x2026;</li>
 
 </ul>
 
 </section>
-<section id="slide-org53db907">
-<h4 id="org53db907">What have we learned</h4>
+<section id="slide-org2296204">
+<h3 id="org2296204">What have we learned</h3>
 <ul>
-<li>Adding linguistically useful predictors to the model increases the R<sup>2</sup></li>
-<li>But so does adding completely random predictors!</li>
-<li>In fact, adding an extra predictor will <b>always</b> increase R<sup>2</sup> (sometimes just imperceptibly)</li>
-<li>So, we need more sophisticated means than R<sup>2</sup> to determine what predictors to keep in a model
+<li class="fragment">Adding linguistically useful predictors to the model increases the R<sup>2</sup></li>
+<li class="fragment">But so does adding completely random predictors!</li>
+<li class="fragment">In fact, adding an extra predictor will <b>always</b> increase R<sup>2</sup> (sometimes just imperceptibly)</li>
+<li class="fragment">So, we need more sophisticated means than R<sup>2</sup> to determine what predictors to keep in a model
 <ul>
-<li>Topic of session 3</li>
+<li class="fragment">Topic of session 3</li>
 
 </ul></li>
-<li>Now, letʼs shift gears and think about what a predictor is</li>
+<li class="fragment">Now, letʼs shift gears and think about what a predictor is</li>
 
 </ul>
 
 </section>
 </section>
 <section>
-<section id="slide-org385f550">
-<h2 id="org385f550">Translating hypotheses to models</h2>
-<div class="outline-text-2" id="text-org385f550">
+<section id="slide-org304a8f8">
+<h2 id="org304a8f8">Translating hypotheses to models</h2>
+<div class="outline-text-2" id="text-org304a8f8">
 </div>
 </section>
-<section id="slide-org55c8430">
-<h3 id="org55c8430">Translating hypotheses to models</h3>
+<section id="slide-org0fb2d38">
+<h3 id="org0fb2d38">Translating hypotheses to models</h3>
 <ul>
-<li>In the previous exercise, we had a very basic notion of predictors</li>
-<li>Now we want to make this more explicit</li>
-<li>The basic regression model: linear regression
+<li class="fragment">In the previous exercise, we had a very basic notion of predictors</li>
+<li class="fragment">Now we want to make this more explicit</li>
+<li class="fragment">The basic regression model: linear regression
 <ul>
-<li>\(\hat{y}_i = \beta x_i + \epsilon_i\)</li>
+<li class="fragment">\(\hat{y}_i = \beta x_i + \epsilon_i\)</li>
 
 </ul></li>
-<li>Each i is one observation; x is a vector of features; &beta; is fit by the model</li>
-<li>We pick what the elements of \(x_i\) are
+<li class="fragment">Each i is one observation; x is a vector of features; &beta; is fit by the model</li>
+<li class="fragment">We pick what the elements of \(x_i\) are
 <ul>
-<li>The structure of x corresponds to the structure of our hypotheses</li>
+<li class="fragment">The structure of x corresponds to the structure of our hypotheses</li>
 
 </ul></li>
 
 </ul>
 
 </section>
-<section id="slide-orgb95304f">
-<h4 id="orgb95304f">(In)dependent variables</h4>
+<section id="slide-orgebb41d6">
+<h4 id="orgebb41d6">(In)dependent variables</h4>
 <ul>
-<li>The most common way of describing the structure of a statistical model uses the terms “dependent variable” and “independent variable”
+<li class="fragment">The most common way of describing the structure of a statistical model uses the terms “dependent variable” and “independent variable”
 <dl>
-<dt>dependent variable</dt><dd>the y in the equation.  The value of y depends on the value of x.</dd>
-<dt>independent variable</dt><dd>the x in the equation.  It does not depend on y.</dd>
+<dt class="fragment">dependent variable</dt><dd class="fragment">the y in the equation.  The value of y depends on the value of x.</dd>
+<dt class="fragment">independent variable</dt><dd class="fragment">the x in the equation.  It does not depend on y.</dd>
 
 </dl></li>
 
@@ -290,11 +295,11 @@ runGitHub<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"ae
 <section >
 
 <ul>
-<li>This terminology is a mess
+<li class="fragment">This terminology is a mess
 <ul>
-<li>It implies that x is causally prior to y, but this is not necessarily the case</li>
-<li>It implies that the xʼs are independent of each other, but (ditto)</li>
-<li>Itʼs confusing</li>
+<li class="fragment">It implies that x is causally prior to y, but this is not necessarily the case</li>
+<li class="fragment">It implies that the xʼs are independent of each other, but (ditto)</li>
+<li class="fragment">Itʼs confusing</li>
 
 </ul></li>
 
@@ -304,28 +309,28 @@ runGitHub<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"ae
 <section >
 
 <ul>
-<li>Weʼre stuck with it, though</li>
-<li>Sometimes the independent variables (xʼs) are also referred to as predictors, and y as the outcome.
+<li class="fragment">Weʼre stuck with it, though</li>
+<li class="fragment">Sometimes the independent variables (xʼs) are also referred to as predictors, and y as the outcome.
 A bit clearer, but not totally standard.
 <ul>
-<li>Iʼll try to use this terminology for the presentation</li>
+<li class="fragment">Iʼll try to use this terminology for the presentation</li>
 
 </ul></li>
 
 </ul>
 
 </section>
-<section id="slide-org7cefc6f">
-<h3 id="org7cefc6f">Linear terms</h3>
+<section id="slide-org77f4bc0">
+<h3 id="org77f4bc0">Linear terms</h3>
 <ul>
-<li>The simplest statistical model is of a linear relationship between a predictor and an outcome
+<li class="fragment">The simplest statistical model is of a linear relationship between a predictor and an outcome
 <ul>
-<li>F° = \(\frac{9}{5}\) C° + 32</li>
+<li class="fragment">F° = \(\frac{9}{5}\) C° + 32</li>
 
 </ul></li>
-<li>Because of this, linear models are the most often used in science
+<li class="fragment">Because of this, linear models are the most often used in science
 <ul>
-<li>Not necessarily because linear relationships are underlyingly true</li>
+<li class="fragment">Not necessarily because linear relationships are underlyingly true</li>
 
 </ul></li>
 
@@ -341,34 +346,34 @@ A bit clearer, but not totally standard.
 </div>
 
 </section>
-<section id="slide-org1e84492">
-<h4 id="org1e84492">Imperfect but useful</h4>
+<section id="slide-org52ca782">
+<h4 id="org52ca782">Imperfect but useful</h4>
 <ul>
-<li>Nonetheless, linear regression can be useful to describe trends in the data</li>
-<li>R has a special object for describing the structure of models: the formula
+<li class="fragment">Nonetheless, linear regression can be useful to describe trends in the data</li>
+<li class="fragment">R has a special object for describing the structure of models: the formula
 <ul>
-<li><code>outcome ~ predictor1 + predictor2 + ...</code></li>
+<li class="fragment"><code>outcome ~ predictor1 + predictor2 + ...</code></li>
 
 </ul></li>
-<li>This resembles, but is not exactly, the mathematical formula for the regression
+<li class="fragment">This resembles, but is not exactly, the mathematical formula for the regression
 <ul>
-<li>Itʼs missing the intercept term: the value that <code>outcome</code> will take on when all the predictors are 0</li>
-<li>Itʼs missing &epsilon;</li>
+<li class="fragment">Itʼs missing the intercept term: the value that <code>outcome</code> will take on when all the predictors are 0</li>
+<li class="fragment">Itʼs missing &epsilon;</li>
 
 </ul></li>
-<li>In order to fit a Linear Model in R, use the <code>lm</code> function
+<li class="fragment">In order to fit a Linear Model in R, use the <code>lm</code> function
 <ul>
-<li></li>
+<li class="fragment"></li>
 
 </ul></li>
 
 </ul>
 
 </section>
-<section id="slide-org0661e9c">
-<h4 id="org0661e9c">Fitting linear models in R</h4>
+<section id="slide-org0d0b1ba">
+<h4 id="org0d0b1ba">Fitting linear models in R</h4>
 <ul>
-<li>The output of <code>lm</code> isnʼt maximally informative</li>
+<li class="fragment">The output of <code>lm</code> isnʼt maximally informative</li>
 
 </ul>
 
@@ -388,13 +393,13 @@ Coefficients:
 </pre>
 
 </section>
-<section id="slide-org6ad260d">
-<h4 id="org6ad260d">A better way</h4>
+<section id="slide-org7966446">
+<h4 id="org7966446">A better way</h4>
 <ul>
-<li>So we ask for the summary of the linear model
+<li class="fragment">So we ask for the summary of the linear model
 <ul>
-<li>(Counterintuitively, the summary is longer and more informative than the model itself)</li>
-<li>Lots of objects in R can be summarized, not only models</li>
+<li class="fragment">(Counterintuitively, the summary is longer and more informative than the model itself)</li>
+<li class="fragment">Lots of objects in R can be summarized, not only models</li>
 
 </ul></li>
 
@@ -428,28 +433,28 @@ F-statistic: 115.4 on 1 and 16952 DF,  p-value: &lt; 2.2e-16
 </pre>
 
 </section>
-<section id="slide-orge2e4678">
-<h4 id="orge2e4678">Trying it ourselves</h4>
+<section id="slide-org56f20cd">
+<h4 id="org56f20cd">Trying it ourselves</h4>
 <ul>
-<li>Try to fit a model that has both <code>nletters</code> and <code>summed.bigram</code> as predictors</li>
-<li>What do you notice?</li>
+<li class="fragment">Try to fit a model that has both <code>nletters</code> and <code>summed.bigram</code> as predictors</li>
+<li class="fragment">What do you notice?</li>
 
 </ul>
 
 </section>
-<section id="slide-orgf72d0eb">
-<h4 id="orgf72d0eb">P-values</h4>
+<section id="slide-orgabda138">
+<h4 id="orgabda138">P-values</h4>
 <ul>
-<li>There are two types of p-values in the model output</li>
-<li>The first: associated with each predictor
+<li class="fragment">There are two types of p-values in the model output</li>
+<li class="fragment">The first: associated with each predictor
 <ul>
-<li>A statistical test: does the model fit better with this predictor or without it?</li>
+<li class="fragment">A statistical test: does the model fit better with this predictor or without it?</li>
 
 </ul></li>
-<li>The second: associated with the model
+<li class="fragment">The second: associated with the model
 <ul>
-<li>Does this model fit better than no model at all</li>
-<li>Unless you are doing something really silly, this will always be very small</li>
+<li class="fragment">Does this model fit better than no model at all</li>
+<li class="fragment">Unless you are doing something really silly, this will always be very small</li>
 
 </ul></li>
 
@@ -459,9 +464,9 @@ F-statistic: 115.4 on 1 and 16952 DF,  p-value: &lt; 2.2e-16
 <section >
 
 <ul>
-<li>Experiment with adding and subtracting predictors in Exercise 2
+<li class="fragment">Experiment with adding and subtracting predictors in Exercise 2
 <ul>
-<li>What do you notice about the p-values?
+<li class="fragment">What do you notice about the p-values?
 Is it possible to give one single “true” p-value for each predictor?</li>
 
 </ul></li>
@@ -469,67 +474,67 @@ Is it possible to give one single “true” p-value for each predictor?</li>
 </ul>
 
 </section>
-<section id="slide-org63e753a">
-<h3 id="org63e753a">Nonlinear terms</h3>
+<section id="slide-orgaf7ec73">
+<h3 id="orgaf7ec73">Nonlinear terms</h3>
 <ul>
-<li>The popularity of linear regression raises the question: what about cases where the linearity assumption doesnʼt hold?</li>
-<li>Weʼll consider two cases:
+<li class="fragment">The popularity of linear regression raises the question: what about cases where the linearity assumption doesnʼt hold?</li>
+<li class="fragment">Weʼll consider two cases:
 <ul>
-<li>Non-numeric predictors</li>
-<li>Curvilinear relationships</li>
+<li class="fragment">Non-numeric predictors</li>
+<li class="fragment">Curvilinear relationships</li>
 
 </ul></li>
 
 </ul>
 
 </section>
-<section id="slide-orgeb7d3f8">
-<h4 id="orgeb7d3f8">Nonnumeric predictors</h4>
+<section id="slide-orga53a84b">
+<h4 id="orga53a84b">Nonnumeric predictors</h4>
 <ul>
-<li>What if we are trying to predict reaction time by lexicality?</li>
-<li>575 + 10 * (is not a word) = ???</li>
-<li>What happens if we try this in the interactive model?</li>
-<li>One value is the default, the other is assigned a predictor</li>
-<li>What happens with a ternary value like <code>part3</code>?</li>
-<li>Is this the only way to do it?</li>
+<li class="fragment">What if we are trying to predict reaction time by lexicality?</li>
+<li class="fragment">575 + 10 * (is not a word) = ???</li>
+<li class="fragment">What happens if we try this in the interactive model?</li>
+<li class="fragment">One value is the default, the other is assigned a predictor</li>
+<li class="fragment">What happens with a ternary value like <code>part3</code>?</li>
+<li class="fragment">Is this the only way to do it?</li>
 
 </ul>
 
 </section>
-<section id="slide-org842fd04">
-<h4 id="org842fd04">Curvilinear predictors</h4>
+<section id="slide-org31a5637">
+<h4 id="org31a5637">Curvilinear predictors</h4>
 <ul>
-<li><p>
+<li class="fragment"><p>
 Itʼs also possible for a predictor to have a curvilinear relationship with an outcome
 </p>
 
 
-<div id="orged3b92d" class="figure">
+<div id="org3bb713f" class="figure">
 <p><object type="image/svg+xml" data="sickle-cell.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
 </div></li>
 
-<li>This doesnʼt come up in our example dataset, but it is worth keeping in mind</li>
+<li class="fragment">This doesnʼt come up in our example dataset, but it is worth keeping in mind</li>
 
 </ul>
 
 </section>
-<section id="slide-org6c43cd0">
-<h3 id="org6c43cd0">Interaction terms</h3>
-<div class="outline-text-3" id="text-org6c43cd0">
+<section id="slide-orgb111035">
+<h3 id="orgb111035">Interaction terms</h3>
+<div class="outline-text-3" id="text-orgb111035">
 </div>
 </section>
-<section id="slide-orgf3d5d1d">
-<h4 id="orgf3d5d1d">Interaction terms</h4>
+<section id="slide-org58ea786">
+<h4 id="org58ea786">Interaction terms</h4>
 <ul>
-<li>A single predictor might have different effects in different contexts</li>
-<li>An example from our dataset: lexicality and bigram frequency</li>
+<li class="fragment">A single predictor might have different effects in different contexts</li>
+<li class="fragment">An example from our dataset: lexicality and bigram frequency</li>
 
 </ul>
 
 
-<div id="orgfd5ad5f" class="figure">
+<div id="orge2d1243" class="figure">
 <p><object type="image/svg+xml" data="interaction1.svg" class="fragment">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -546,55 +551,55 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-orgf8872b5">
-<h4 id="orgf8872b5">Whats going on here?</h4>
+<section id="slide-org978741a">
+<h4 id="org978741a">Whats going on here?</h4>
 <ul>
-<li>(NB this is not an attempt to actually explain this phenomenon)</li>
-<li>Maybe: there is a difference in what speakers do for words and non-words</li>
-<li>For words:
+<li class="fragment">(NB this is not an attempt to actually explain this phenomenon)</li>
+<li class="fragment">Maybe: there is a difference in what speakers do for words and non-words</li>
+<li class="fragment">For words:
 <ul style="font-size:50%">
-<li>Look the word up by meaning</li>
-<li>“Hash table” algorithm</li>
-<li>Takes ~constant time</li>
+<li class="fragment">Look the word up by meaning</li>
+<li class="fragment">“Hash table” algorithm</li>
+<li class="fragment">Takes ~constant time</li>
 
 </ul></li>
-<li>For non-words:
+<li class="fragment">For non-words:
 <ul style="font-size:50%">
-<li>Search through all the words you know to make sure itʼs not there</li>
-<li>“List search” algorithm</li>
-<li>Takes time proportional to the wordʼs length</li>
+<li class="fragment">Search through all the words you know to make sure itʼs not there</li>
+<li class="fragment">“List search” algorithm</li>
+<li class="fragment">Takes time proportional to the wordʼs length</li>
 
 </ul></li>
 
 </ul>
 
 </section>
-<section id="slide-org60e0100">
-<h4 id="org60e0100">Illustration</h4>
+<section id="slide-org8c29bfb">
+<h4 id="org8c29bfb">Illustration</h4>
 <ul>
-<li>The most bigram-frequent non-word in the data is “trainstessed”
+<li class="fragment">The most bigram-frequent non-word in the data is “trainstessed”
 <ul style="font-size:50%">
-<li>It looks very word-like</li>
-<li>It contains meaningful morphemes (train, -ed)</li>
-<li>Itʼs long (12 letters, 3 syllables)</li>
-<li>It takes a (relatively) long time to satisfy ourselves that this is not in fact a word</li>
+<li class="fragment">It looks very word-like</li>
+<li class="fragment">It contains meaningful morphemes (train, -ed)</li>
+<li class="fragment">Itʼs long (12 letters, 3 syllables)</li>
+<li class="fragment">It takes a (relatively) long time to satisfy ourselves that this is not in fact a word</li>
 
 </ul></li>
-<li>Compare “gix”, one of the most bigram-infrequent words in the sample
+<li class="fragment">Compare “gix”, one of the most bigram-infrequent words in the sample
 <ul>
-<li>We can rapidly be sure itʼs not a word</li>
+<li class="fragment">We can rapidly be sure itʼs not a word</li>
 
 </ul></li>
-<li>(Aside: bigram frequency should probably be normalized by length)</li>
+<li class="fragment">(Aside: bigram frequency should probably be normalized by length)</li>
 
 </ul>
 
 </section>
-<section id="slide-orgc7b5a68">
-<h4 id="orgc7b5a68">Modeling</h4>
+<section id="slide-orgcd167ef">
+<h4 id="orgcd167ef">Modeling</h4>
 <ul>
-<li>Whatever the underlying reasons, we want our model to take this property of the data into account</li>
-<li><p>
+<li class="fragment">Whatever the underlying reasons, we want our model to take this property of the data into account</li>
+<li class="fragment"><p>
 If we ignore it, we will just fit one effect for summed bigram frequency
 </p>
 
@@ -608,48 +613,94 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-orgcebab2c">
-<h4 id="orgcebab2c">Interactions in R</h4>
+<section id="slide-orgaf772bf">
+<h4 id="orgaf772bf">Interactions in R</h4>
 <ul>
-<li>In order to fit an interaction term in R, we use the multiplication notation: <code>predictor1*predictor2</code></li>
-<li>This is shorthand for three predictors:
+<li class="fragment">In order to fit an interaction term in R, we use the multiplication notation: <code>predictor1*predictor2</code></li>
+<li class="fragment">This is shorthand for three predictors:
 <ul>
-<li><code>predictor1</code></li>
-<li><code>predictor2</code></li>
-<li>the two predictors multiplied together (notated <code>predictor1:predictor2</code>)</li>
+<li class="fragment"><code>predictor1</code></li>
+<li class="fragment"><code>predictor2</code></li>
+<li class="fragment">the two predictors multiplied together (notated <code>predictor1:predictor2</code>)</li>
 
 </ul></li>
-<li>Look at Exercise 3, which is the same as Exercise 2 with the choice added for an interaction term
+<li class="fragment">Look at Exercise 3, which is the same as Exercise 2 with the choice added for an interaction term
 <ul>
-<li>Can you demonstrate that the <code>*</code> notation adds the predictors I said it should?  That is, that you can simply write <code>summed.bigram*lexicality</code>, not <code>summed.bigram*lexicality + summed.bigram + lexicality</code>?</li>
-<li>What happens to the p-values when you add the interaction term?</li>
+<li class="fragment">Can you demonstrate that the <code>*</code> notation adds the predictors I said it should?  That is, that you can simply write <code>summed.bigram*lexicality</code>, not <code>summed.bigram*lexicality + summed.bigram + lexicality</code>?</li>
+<li class="fragment">What happens to the p-values when you add the interaction term?</li>
 
 </ul></li>
 
 </ul>
 
 </section>
-<section id="slide-org3227d30">
-<h3 id="org3227d30">Nonlinear outputs</h3>
+<section id="slide-orgd79ca5d">
+<h3 id="orgd79ca5d">Nonlinear outputs</h3>
+<div class="outline-text-3" id="text-orgd79ca5d">
+</div>
+</section>
+<section id="slide-orgf48a9ce">
+<h4 id="orgf48a9ce">Non-numeric outputs</h4>
 <ul>
-<li>logistic etc.</li>
-<li>log rt</li>
+<li class="fragment">What if your output isnʼt numeric?</li>
+<li class="fragment">Forced choice judgment task, corpus data (ing vs. inʼ)</li>
+<li class="fragment">One possible answer: predict the “chance” of one outcome or the other
+<ul>
+<li class="fragment">If prediction is &gt; 0.5 guess “yes”, else “no”</li>
+
+</ul></li>
+<li class="fragment">This basically works</li>
+
+</ul>
+
+</section>
+<section id="slide-org1186b5b">
+<h4 id="org1186b5b">The logistic curve</h4>
+<ul>
+<li class="fragment">But not with a linear model</li>
+
+</ul>
+
+
+<div id="org7cdfd82" class="figure">
+<p><object type="image/svg+xml" data="logistic.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-org7adc2f1">
+<h3 id="org7adc2f1">Non-linear outputs</h3>
+<ul>
+<li class="fragment">What if the relationship between the input and the output is not linear?</li>
+<li class="fragment">If I give my tomatoes 1 gallon of water, they grow a foot
+<ul>
+<li class="fragment">100 gallons &rarr; 100 feet?</li>
+
+</ul></li>
+<li class="fragment">The solution is transforming the data
+<ul>
+<li class="fragment">Square, square root, logarithm&#x2026;</li>
+<li class="fragment">Sometimes you know what to use, sometimes you try to figure it out from the data</li>
+
+</ul></li>
+<li class="fragment">More on this topic coming up right now&#x2026;</li>
 
 </ul>
 
 </section>
 </section>
 <section>
-<section id="slide-orgf735fe6">
-<h2 id="orgf735fe6">Checking assumptions</h2>
-<div class="outline-text-2" id="text-orgf735fe6">
+<section id="slide-org2a5d4a1">
+<h2 id="org2a5d4a1">Checking assumptions</h2>
+<div class="outline-text-2" id="text-org2a5d4a1">
 </div>
 </section>
-<section id="slide-orgb2ed7e8">
-<h3 id="orgb2ed7e8">Assumptions of linear models</h3>
+<section id="slide-org759839b">
+<h3 id="org759839b">Assumptions of linear models</h3>
 <ul>
-<li>Letʼs get back to our data compression example for a moment</li>
-<li>Which is more compressed?</li>
+<li class="fragment">Letʼs get back to our data compression example for a moment</li>
+<li class="fragment">Which is more compressed?</li>
 
 </ul>
 
@@ -699,8 +750,8 @@ Sorry, your browser does not support SVG.</object>
 </table>
 
 </section>
-<section id="slide-org5fa6a89">
-<h3 id="org5fa6a89">Compression gone awry</h3>
+<section id="slide-org18b84ae">
+<h3 id="org18b84ae">Compression gone awry</h3>
 
 <div class="figure">
 <p><img src="snakesladders.jpg" alt="snakesladders.jpg" width="30%" />
@@ -708,38 +759,38 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 <ul>
-<li>2 5 vs. 5 2</li>
+<li class="fragment">2 5 vs. 5 2</li>
 
 </ul>
 
 </section>
-<section id="slide-org189ed5c">
-<h3 id="org189ed5c">Residuals and compression</h3>
+<section id="slide-org7c2f392">
+<h3 id="org7c2f392">Residuals and compression</h3>
 <ul>
-<li>Residuals in a model are a long list of random numbers
+<li class="fragment">Residuals in a model are a long list of random numbers
 <ul>
-<li>They look like rolls of a die</li>
+<li class="fragment">They look like rolls of a die</li>
 
 </ul></li>
-<li>They compress much better if order doesnʼt matter</li>
-<li>Important assumption of linear models: <i>homoskedastic residuals</i>
+<li class="fragment">They compress much better if order doesnʼt matter</li>
+<li class="fragment">Important assumption of linear models: <i>homoskedastic residuals</i>
 <ul>
-<li>“same variance”</li>
+<li class="fragment">“same variance”</li>
 
 </ul></li>
 
 </ul>
 
 </section>
-<section id="slide-org64a4bce">
-<h3 id="org64a4bce">Plotting to check homoskedasticity</h3>
+<section id="slide-org619a1ff">
+<h3 id="org619a1ff">Plotting to check homoskedasticity</h3>
 <ul>
-<li>Homoskedasticity can be checked on a fitted-residual plot</li>
+<li class="fragment">Homoskedasticity can be checked on a fitted-residual plot</li>
 
 </ul>
 
 
-<div id="orgc8eceb9" class="figure">
+<div id="orgff420d9" class="figure">
 <p><object type="image/svg+xml" data="fitted-resid.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -758,31 +809,162 @@ Sorry, your browser does not support SVG.</object>
 </section>
 </section>
 <section>
-<section id="slide-org02d3584">
-<h2 id="org02d3584">foo</h2>
+<section id="slide-org18d7c50">
+<h2 id="org18d7c50">Homoskedasticity and mixed effects models</h2>
+<div class="outline-text-2" id="text-org18d7c50">
+</div>
+</section>
+<section id="slide-org8289fd6">
+<h3 id="org8289fd6">The problem</h3>
 <ul>
-<li>next: heteroskedastic residuals</li>
-<li>dependent and independent variables</li>
+<li class="fragment">We can never, ever assume that residuals are homoskedastic in linguistics
+<ul>
+<li class="fragment">Speakers</li>
+<li class="fragment">Words</li>
 
-</ul>
-</section>
-</section>
-<section>
-<section id="slide-org8d04702">
-<h2 id="org8d04702">things to add</h2>
-<p>
-when the universe of data is closed, you can always get better performance by adding more predictors
-</p>
-<ul>
-<li>importance of interpretability</li>
-<li>cross validation methods</li>
+</ul></li>
+<li class="fragment">We need to tell the model about this, or it will be misled</li>
+<li class="fragment">The answer: mixed-effects models</li>
 
 </ul>
 
+</section>
+<section id="slide-org3068e8c">
+<h3 id="org3068e8c">Towards a solution</h3>
+<ul>
+<li class="fragment">Predictors in a model “control” for sources of variability</li>
+<li class="fragment">One idea: letʼs just add another predictor to the model for subject, to “control” subject level-variability
+<ul>
+<li class="fragment"><code>outcome ~ predictor1 + predictor2 + subject</code></li>
 
+</ul></li>
+<li class="fragment">Whatʼs wrong with this idea?
+<ul>
+<li class="fragment">It introduces lots of parameters to the model</li>
+<li class="fragment">It allows subjects to vary too much</li>
+
+</ul></li>
+<li class="fragment">This second one Iʼll call “parameter identification”
+<ul>
+<li class="fragment">Is an effect due to (e.g.) gender, or is it because Peter, Paul, and Mary are just different people?</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgbb18264">
+<h3 id="orgbb18264">Mixed-effects models</h3>
+<ul>
+<li class="fragment">Intuition: most subjects are like the average subject</li>
+<li class="fragment">This sounds trivial, but itʼs not
+<ul>
+<li class="fragment">Compare: most treatments are like the average treatment</li>
+<li class="fragment">&#x2026;placebo, caffeine, alcohol, Adderall, chloroform</li>
+
+</ul></li>
+<li class="fragment">Add a predictor to the model per subject, but constrain it to follow a normal distribution</li>
+
+</ul>
+
+</section>
+<section id="slide-org06e1013">
+<h3 id="org06e1013">Benefits of mixed effects models</h3>
+<ul>
+<li class="fragment">Solves the many-parameters problem: we only need 2 (mean, variance) regardless of how many subjects we have</li>
+<li class="fragment">Solves the parameter identification problem: only a certain amount of variance can be attributed to subject effect; the rest should be allocated to other predictors (or &epsilon;)</li>
+
+</ul>
+
+</section>
+<section id="slide-org1d2d671">
+<h3 id="org1d2d671">Mixed effects models: the terminological swamp</h3>
+<ul>
+<li class="fragment">Unfortunately, statisticians/practitioners donʼt have good, consistent vocab for talking about these models</li>
+<li class="fragment">Fixed/random effects</li>
+<li class="fragment">Mixed-effects</li>
+<li class="fragment">Hierarchical models</li>
+<li class="fragment">Because of this, one of the easiest ways to communicate about these models is through code</li>
+
+</ul>
+
+</section>
+<section id="slide-org7dbf136">
+<h3 id="org7dbf136">Mixed effect models in R</h3>
+<ul>
+<li class="fragment">The usual formula syntax is extended to represent mixed-effects models
+<ul>
+<li class="fragment">Technical note: Iʼm using the widespread <code>lme4</code> syntax in this talk</li>
+
+</ul></li>
+
+</ul>
+
+<div class="org-center">
 <p>
-independence assumption: dice example / chutes and ladders
+<code>outcome ~ predictors + (1 | subject)</code>
 </p>
+</div>
+
+</section>
+<section id="slide-org62d2afd">
+<h3 id="org62d2afd">Experimenting with mixed effects models</h3>
+<ul>
+<li class="fragment">Switch over to exercise 5</li>
+<li class="fragment">What you see: a comparison of the coefficients in a mixed and non-mixed model, plus the summary of the mixed model</li>
+<li class="fragment">Focus on the latter: whatʼs different?
+<ul>
+<li class="fragment">Scaling of predictors</li>
+<li class="fragment">Random effect estimates</li>
+<li class="fragment">Where are the p-values?</li>
+
+</ul></li>
+<li class="fragment">Now look at the coefficient comparisons: how does mixed-effects-ness affect the results?</li>
+
+</ul>
+
+</section>
+<section id="slide-org3094b6b">
+<h3 id="org3094b6b">Results of mixed-effect models</h3>
+<ul>
+<li class="fragment">It looks like mixed effects models havenʼt been very revolutionary here</li>
+<li class="fragment">We might have expected this
+<ul>
+<li class="fragment">Balanced design</li>
+<li class="fragment">Many participants</li>
+<li class="fragment">Many stimuli</li>
+<li class="fragment">Itʼs not a bad thing!</li>
+
+</ul></li>
+<li class="fragment">Where are mixed-effects models more useful?
+<ul>
+<li class="fragment">Unbalanced designs</li>
+<li class="fragment">Corpus work</li>
+<li class="fragment">Clamping down on potentially spurious effects</li>
+<li class="fragment">Conceptually better model</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org293873c">
+<h3 id="org293873c">Wrapping up</h3>
+<ul>
+<li class="fragment">Today
+<ul>
+<li class="fragment">Introduction to modeling issues</li>
+<li class="fragment">Motivation of mixed-effects modeling</li>
+
+</ul></li>
+<li class="fragment">Next time
+<ul>
+<li class="fragment">How to get p-values back (or more accurately, how to compare models and evaluate the contribution of predictors)</li>
+<li class="fragment">More details on constructing mixed-effects models to fit research scenarios</li>
+
+</ul></li>
+
+</ul>
 </section>
 </section>
 </div>
