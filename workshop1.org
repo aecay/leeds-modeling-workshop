@@ -61,7 +61,7 @@
   - Take a computer file, make it smaller
 - Letʼs try to develop our own miniature compression scheme
 
-#+attr_html: :style font-size:20%
+#+attr_html: :style font-size:40%
 #+begin_quote
 Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, ‘and what is the use of a book,’ thought Alice ‘without pictures or conversations?’
 #+end_quote
@@ -70,7 +70,6 @@ Alice was beginning to get very tired of sitting by her sister on the bank, and 
 
 the \to z
 
-#+attr_html: :style font-size:30%
 #+begin_quote
 Alice was beginning to get very tired of sitting by her sister on *z* bank, and of having nothing to do: once or twice she had peeped into *z* book her sister was reading, but it had no pictures or conversations in it, ‘and what is *z* use of a book,’ thought Alice ‘without pictures or conversations?’
 #+end_quote
@@ -79,7 +78,6 @@ Alice was beginning to get very tired of sitting by her sister on *z* bank, and 
 
 ha \to x
 
-#+attr_html: :style font-size:30%
 #+begin_quote
 Alice was beginning to get very tired of sitting by her sister on *z* bank, and of *x*\nothing{}ving nothing to do: once or twice she *x*\nothing{}d peeped into *z* book her sister was reading, but it *x*\nothing{}d no pictures or conversations in it, ‘and w\nothing{}*x*\nothing{}t is *z* use of a book,’ thought Alice ‘without pictures or conversations?’
 #+end_quote
@@ -88,7 +86,6 @@ Alice was beginning to get very tired of sitting by her sister on *z* bank, and 
 
 e␣ \to y and vice versa
 
-#+attr_html: :style font-size:30%
 #+begin_quote
 Alic\nothing{}*y*\nothing{}was beginning to get ver\nothing{}*e␣* tired of sitting b\nothing{}*e␣* her sister on *z* bank, and of *x*\nothing{}ving nothing to do: onc\nothing{}*y*\nothing{}or twic\nothing{}*y*\nothing{}sh\nothing{}*y*\nothing{}*x*\nothing{}d peeped into *z* book her sister was reading, but it *x*\nothing{}d no pictures or conversations in it, ‘and w\nothing{}*x*\nothing{}t is *z* us\nothing{}*y*\nothing{}of a book,’ thought Alic\nothing{}*y*\nothing{}‘without pictures or conversations?’
 #+end_quote
@@ -116,7 +113,6 @@ Alic\nothing{}*y*\nothing{}was beginning to get ver\nothing{}*e␣* tired of sit
 [[file:hot-air-balloon.jpg]]
 
 * Compression and models
-** Lossy compression and models
 
 - The kinds of statistical models weʼll be talking about in these seminars are lossy
 - They divide the information in the data into two parts
@@ -140,14 +136,22 @@ runGitHub("aecay/leeds-modeling-wkshp-2017", subdir = "shiny/w1/")
 - Dataset of reaction times in a lexical decision task, from [[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278621/][the British Lexicon Project]].
 - Random subset of 500 words (to keep computations managable)
 - Predictors:
-  #+attr_html: :style font-size:30%
-  - lexicality :: word or non-word
-  - nletters :: number of letters in the stimulus
-  - subtlex.frequency :: frequency of the stimulus in the SUBTLEX corpus
-  - summed.bigram :: sum of bigram frequencies in the word
-  - OLD20 :: a measure of neighborhood density
-  - part3 :: remainder when dividing the participantʼs study ID by 3
-  - lett.odd :: did the word start with an odd-numbered letter of the alphabet
+
+*************** TODO donʼt make the definition list entries fragments :noexport:
+*************** END
+
+
+
+#+attr_html: :style font-size:30%
+- lexicality :: word or non-word
+- nletters :: number of letters in the stimulus
+- subtlex.frequency :: frequency of the stimulus in the SUBTLEX corpus
+- summed.bigram :: sum of bigram frequencies in the word
+- OLD20 :: a measure of neighborhood density
+- part3 :: remainder when dividing the participantʼs study ID by 3
+- lett.odd :: did the word start with an odd-numbered letter of the alphabet
+
+
 - See what you can come up with...
 
 ** What have we learned
@@ -160,8 +164,8 @@ runGitHub("aecay/leeds-modeling-wkshp-2017", subdir = "shiny/w1/")
 - Now, letʼs shift gears and think about what a predictor is
 
 * Translating hypotheses to models
-** Translating hypotheses to models
 
+#+attr_html: :style font-size:80%
 - In the previous exercise, we had a very basic notion of predictors
 - Now we want to make this more explicit
 - The basic regression model: linear regression
@@ -170,11 +174,15 @@ runGitHub("aecay/leeds-modeling-wkshp-2017", subdir = "shiny/w1/")
 - We pick what the elements of $x_i$ are
   - The structure of x corresponds to the structure of our hypotheses
 
-*** (In)dependent variables
+** (In)dependent variables
 
 - The most common way of describing the structure of a statistical model uses the terms “dependent variable” and “independent variable”
   - dependent variable :: the y in the equation.  The value of y depends on the value of x.
   - independent variable :: the x in the equation.  It does not depend on y.
+
+*************** TODO carry over the title onto slides after the split :noexport:
+*************** END
+
 
 #+reveal: split
 
@@ -203,6 +211,7 @@ runGitHub("aecay/leeds-modeling-wkshp-2017", subdir = "shiny/w1/")
 
 *** Imperfect but useful
 
+#+attr_html: :style font-size:70%
 - Nonetheless, linear regression can be useful to describe trends in the data
 - R has a special object for describing the structure of models: the formula
   - ~outcome ~ predictor1 + predictor2 + ...~
@@ -321,7 +330,6 @@ F-statistic: 115.4 on 1 and 16952 DF,  p-value: < 2.2e-16
 - This doesnʼt come up in our example dataset, but it is worth keeping in mind
 
 ** Interaction terms
-*** Interaction terms
 
 - A single predictor might have different effects in different contexts
 - An example from our dataset: lexicality and bigram frequency
@@ -406,6 +414,9 @@ The fragment class is applied to the object tag, not the div class=figure elemen
   - ~predictor1~
   - ~predictor2~
   - the two predictors multiplied together (notated ~predictor1:predictor2~)
+
+#+reveal: split
+
 - Look at Exercise 3, which is the same as Exercise 2 with the choice added for an interaction term
   - Can you demonstrate that the ~*~ notation adds the predictors I said it should?  That is, that you can simply write ~summed.bigram*lexicality~, not ~summed.bigram*lexicality + summed.bigram + lexicality~?
   - What happens to the p-values when you add the interaction term?
@@ -526,6 +537,9 @@ The fragment class is applied to the object tag, not the div class=figure elemen
 - Predictors in a model “control” for sources of variability
 - One idea: letʼs just add another predictor to the model for subject, to “control” subject level-variability
   - ~outcome ~ predictor1 + predictor2 + subject~
+
+#+reveal: split
+
 - Whatʼs wrong with this idea?
   - It introduces lots of parameters to the model
   - It allows subjects to vary too much
@@ -580,6 +594,9 @@ The fragment class is applied to the object tag, not the div class=figure elemen
   - Many participants
   - Many stimuli
   - Itʼs not a bad thing!
+
+#+reveal: split
+
 - Where are mixed-effects models more useful?
   - Unbalanced designs
   - Corpus work
@@ -594,3 +611,4 @@ The fragment class is applied to the object tag, not the div class=figure elemen
 - Next time
   - How to get p-values back (or more accurately, how to compare models and evaluate the contribution of predictors)
   - More details on constructing mixed-effects models to fit research scenarios
+- Thanks for listening!
