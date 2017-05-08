@@ -1,11 +1,7 @@
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(lme4)
 
-if(!exists("dat")) {
-    dat <- read.csv("https://github.com/aecay/leeds-modeling-workshop/raw/master/data.csv")
-    dat$part3 <- factor(dat$part3)
-}
-
+dat$part3 <- factor(dat$part3)
 dat$nletters.s <- (dat$nletters - mean(dat$nletters)) / sd(dat$nletters)
 dat$subtlex.frequency.s <- (dat$subtlex.frequency - mean(dat$subtlex.frequency)) / sd(dat$subtlex.frequency)
 dat$summed.bigram.s <- (dat$summed.bigram - mean(dat$summed.bigram)) / sd(dat$summed.bigram)
@@ -121,7 +117,7 @@ server <- function(input, output) {
         if (input$logp) {
             print(summary(lm(log(rt) ~ nletters + subtlex.frequency + summed.bigram * lexicality + OLD20 + lett.odd + part3, data = dat)))
         } else {
-            print(summary(lm(rt ~ nletters * subtlex.frequency + summed.bigram * lexicality + OLD20 + lett.odd + part3, data = dat)))
+            print(summary(lm(rt ~ nletters + subtlex.frequency + summed.bigram * lexicality + OLD20 + lett.odd + part3, data = dat)))
         }
     })
 
