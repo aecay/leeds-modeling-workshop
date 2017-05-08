@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Introduction to statistical modeling</title>
+<meta name="author" content="(Aaron Ecay)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://aecay.github.io/leeds-modeling-workshop/revealjs/css/reveal.css"/>
+
+<link rel="stylesheet" href="https://aecay.github.io/leeds-modeling-workshop/revealjs/css/theme/black.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://aecay.github.io/leeds-modeling-workshop/revealjs/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h2 class="author">Aaron Ecay</h2><p class="date">Created: 2017-05-08 Mon 02:26</p>
+</section>
+
+<section>
+<section id="slide-orge8cb2c3">
+<h2 id="orge8cb2c3">Introduction</h2>
+<div class="outline-text-2" id="text-orge8cb2c3">
+</div>
+</section>
+<section id="slide-orgd7d3417">
+<h3 id="orgd7d3417"><span class="todo TODO">TODO</span> Pre-intro</h3>
+<p>
+more about goals
+</p>
+</section>
+<section id="slide-org97f54e0">
+<h3 id="org97f54e0">Introduction</h3>
+<div class="outline-text-3" id="text-org97f54e0">
+</div>
+</section>
+<section id="slide-org20284fa">
+<h4 id="org20284fa">What modeling is</h4>
+<ul>
+<li>There are a two fundamental ways of looking at statistical modeling</li>
+<li><b>Engineering solution</b> give me the correct answer, it doesnʼt matter how you get there</li>
+<li><b>Scientific solution</b> tell me how the world works</li>
+<li>The tension between these ideas underlies a lot of the groundwork of using statistical models for research</li>
+
+</ul>
+
+</section>
+<section id="slide-org1434fbe">
+<h4 id="org1434fbe">Another way to look at modeling</h4>
+<ul>
+<li>Thereʼs another way to look at statistical models, however</li>
+<li>Dodges the tension between the scientific and engineering approaches</li>
+<li>Illuminates some aspects of the structure of modeling problems</li>
+<li>Models as <b>data compression</b></li>
+
+</ul>
+
+</section>
+<section id="slide-org1633cd2">
+<h4 id="org1633cd2">Data compression: the basics</h4>
+<ul>
+<li>One kind of familiar data compression: ZIP files
+<ul>
+<li>Take a computer file, make it smaller</li>
+
+</ul></li>
+<li>Letʼs try to develop our own miniature compression scheme</li>
+
+</ul>
+
+<blockquote nil>
+<p>
+Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, ‘and what is the use of a book,’ thought Alice ‘without pictures or conversations?’
+</p>
+</blockquote>
+
+</section>
+<section >
+
+<p>
+the &rarr; z
+</p>
+
+<blockquote nil>
+<p>
+Alice was beginning to get very tired of sitting by her sister on <b>z</b> bank, and of having nothing to do: once or twice she had peeped into <b>z</b> book her sister was reading, but it had no pictures or conversations in it, ‘and what is <b>z</b> use of a book,’ thought Alice ‘without pictures or conversations?’
+</p>
+</blockquote>
+
+</section>
+<section >
+
+<p>
+ha &rarr; x
+</p>
+
+<blockquote nil>
+<p>
+Alice was beginning to get very tired of sitting by her sister on <b>z</b> bank, and of <b>x</b>ving nothing to do: once or twice she <b>x</b>d peeped into <b>z</b> book her sister was reading, but it <b>x</b>d no pictures or conversations in it, ‘and w<b>x</b>t is <b>z</b> use of a book,’ thought Alice ‘without pictures or conversations?’
+</p>
+</blockquote>
+
+</section>
+<section >
+
+<p>
+e␣ &rarr; y and vice versa
+</p>
+
+<blockquote nil>
+<p>
+Alic<b>y</b>was beginning to get ver<b>e␣</b> tired of sitting b<b>e␣</b> her sister on <b>z</b> bank, and of <b>x</b>ving nothing to do: onc<b>y</b>or twic<b>y</b>sh<b>y</b><b>x</b>d peeped into <b>z</b> book her sister was reading, but it <b>x</b>d no pictures or conversations in it, ‘and w<b>x</b>t is <b>z</b> us<b>y</b>of a book,’ thought Alic<b>y</b>‘without pictures or conversations?’
+</p>
+</blockquote>
+
+</section>
+<section id="slide-org96fa79c">
+<h4 id="org96fa79c">Notes</h4>
+<ul>
+<li>“X” is <b>more likely</b> to appear than “Y” – we are using the language of probability to describe our model</li>
+<li>The model is based on assumptions about the world (the English language) that could turn out to be wrong</li>
+<li>This is a staatistical model!</li>
+
+</ul>
+
+</section>
+<section id="slide-org2686ba0">
+<h4 id="org2686ba0">Lossless vs. lossy compression</h4>
+<ul>
+<li>This toy example (as well as the ZIP file format) are examples of lossless compression – you can recover the original data with perfect fidelity</li>
+<li>Not all compression is lossless; some is lossy</li>
+
+</ul>
+
+</section>
+<section id="slide-org5356590">
+<h4 id="org5356590">Lossy compression example</h4>
+<ul>
+<li>A familiar example of a lossy compression format is JPEG images</li>
+<li>Not all the information your eye sees is in the image file</li>
+<li>JPEG has a model of how images look</li>
+<li>When the world doesnʼt line up to this model, the result looks bad</li>
+
+</ul>
+
+</section>
+<section >
+
+
+<div class="figure">
+<p><img src="hot-air-balloon.jpg" alt="hot-air-balloon.jpg" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org2dae435">
+<h2 id="org2dae435">Compression and models</h2>
+<div class="outline-text-2" id="text-org2dae435">
+</div>
+</section>
+<section id="slide-org316a317">
+<h3 id="org316a317">Compression and models</h3>
+<div class="outline-text-3" id="text-org316a317">
+</div>
+</section>
+<section id="slide-org0451166">
+<h4 id="org0451166">Lossy compression and models</h4>
+<ul>
+<li>The kinds of statistical models weʼll be talking about in these seminars are lossy</li>
+<li>They divide the information in the data into two parts
+<ul>
+<li>Parameters</li>
+<li>Residuals</li>
+
+</ul></li>
+<li>R<sup>2</sup> is a measure of how much of the variance in the data is explained by the parameters</li>
+
+</ul>
+
+</section>
+<section id="slide-org239892d">
+<h4 id="org239892d">Exercise 1</h4>
+<ul>
+<li>Open up R on your machine</li>
+<li>Run this code:</li>
+
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-R">install.pacakges<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"shiny"</span><span style="color: #b0c4de;">)</span>
+<span style="color: #7fffd4;">library</span><span style="color: #b0c4de;">(</span>shiny<span style="color: #b0c4de;">)</span>
+runGitHub<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"aecay/leeds-modeling-wkshp-2017"</span>, subdir <span style="color: #7fffd4;">=</span> <span style="color: #ffa07a;">"shiny/w1/"</span><span style="color: #b0c4de;">)</span>
+</pre>
+</div>
+
+</section>
+<section id="slide-org2f5fce6">
+<h4 id="org2f5fce6">What are we doing?</h4>
+<ul>
+<li>Dataset of reaction times in a lexical decision task, from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278621/">the British Lexicon Project</a>.</li>
+<li>Random subset of 500 words (to keep computations managable)</li>
+<li>Predictors:
+<dl style="font-size:30%">
+<dt>lexicality</dt><dd>word or non-word</dd>
+<dt>nletters</dt><dd>number of letters in the stimulus</dd>
+<dt>subtlex.frequency</dt><dd>frequency of the stimulus in the SUBTLEX corpus</dd>
+<dt>summed.bigram</dt><dd>sum of bigram frequencies in the word</dd>
+<dt>OLD20</dt><dd>a measure of neighborhood density</dd>
+<dt>part3</dt><dd>remainder when dividing the participantʼs study ID by 3</dd>
+<dt>lett.odd</dt><dd>did the word start with an odd-numbered letter of the alphabet</dd>
+
+</dl></li>
+<li>See what you can come up with&#x2026;</li>
+
+</ul>
+
+</section>
+<section id="slide-org53db907">
+<h4 id="org53db907">What have we learned</h4>
+<ul>
+<li>Adding linguistically useful predictors to the model increases the R<sup>2</sup></li>
+<li>But so does adding completely random predictors!</li>
+<li>In fact, adding an extra predictor will <b>always</b> increase R<sup>2</sup> (sometimes just imperceptibly)</li>
+<li>So, we need more sophisticated means than R<sup>2</sup> to determine what predictors to keep in a model
+<ul>
+<li>Topic of session 3</li>
+
+</ul></li>
+<li>Now, letʼs shift gears and think about what a predictor is</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org385f550">
+<h2 id="org385f550">Translating hypotheses to models</h2>
+<div class="outline-text-2" id="text-org385f550">
+</div>
+</section>
+<section id="slide-org55c8430">
+<h3 id="org55c8430">Translating hypotheses to models</h3>
+<ul>
+<li>In the previous exercise, we had a very basic notion of predictors</li>
+<li>Now we want to make this more explicit</li>
+<li>The basic regression model: linear regression
+<ul>
+<li>\(\hat{y}_i = \beta x_i + \epsilon_i\)</li>
+
+</ul></li>
+<li>Each i is one observation; x is a vector of features; &beta; is fit by the model</li>
+<li>We pick what the elements of \(x_i\) are
+<ul>
+<li>The structure of x corresponds to the structure of our hypotheses</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgb95304f">
+<h4 id="orgb95304f">(In)dependent variables</h4>
+<ul>
+<li>The most common way of describing the structure of a statistical model uses the terms “dependent variable” and “independent variable”
+<dl>
+<dt>dependent variable</dt><dd>the y in the equation.  The value of y depends on the value of x.</dd>
+<dt>independent variable</dt><dd>the x in the equation.  It does not depend on y.</dd>
+
+</dl></li>
+
+</ul>
+
+</section>
+<section >
+
+<ul>
+<li>This terminology is a mess
+<ul>
+<li>It implies that x is causally prior to y, but this is not necessarily the case</li>
+<li>It implies that the xʼs are independent of each other, but (ditto)</li>
+<li>Itʼs confusing</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section >
+
+<ul>
+<li>Weʼre stuck with it, though</li>
+<li>Sometimes the independent variables (xʼs) are also referred to as predictors, and y as the outcome.
+A bit clearer, but not totally standard.
+<ul>
+<li>Iʼll try to use this terminology for the presentation</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org7cefc6f">
+<h3 id="org7cefc6f">Linear terms</h3>
+<ul>
+<li>The simplest statistical model is of a linear relationship between a predictor and an outcome
+<ul>
+<li>F° = \(\frac{9}{5}\) C° + 32</li>
+
+</ul></li>
+<li>Because of this, linear models are the most often used in science
+<ul>
+<li>Not necessarily because linear relationships are underlyingly true</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section >
+
+
+<div class="figure">
+<p><img src="extrapolating.png" alt="extrapolating.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org1e84492">
+<h4 id="org1e84492">Imperfect but useful</h4>
+<ul>
+<li>Nonetheless, linear regression can be useful to describe trends in the data</li>
+<li>R has a special object for describing the structure of models: the formula
+<ul>
+<li><code>outcome ~ predictor1 + predictor2 + ...</code></li>
+
+</ul></li>
+<li>This resembles, but is not exactly, the mathematical formula for the regression
+<ul>
+<li>Itʼs missing the intercept term: the value that <code>outcome</code> will take on when all the predictors are 0</li>
+<li>Itʼs missing &epsilon;</li>
+
+</ul></li>
+<li>In order to fit a Linear Model in R, use the <code>lm</code> function
+<ul>
+<li></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org0661e9c">
+<h4 id="org0661e9c">Fitting linear models in R</h4>
+<ul>
+<li>The output of <code>lm</code> isnʼt maximally informative</li>
+
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-R">lm<span style="color: #b0c4de;">(</span>rt ~ nletters, data <span style="color: #7fffd4;">=</span> dat<span style="color: #b0c4de;">)</span>
+</pre>
+</div>
+
+<pre class="example">
+Call:
+lm(formula = rt ~ nletters, data = dat)
+
+Coefficients:
+(Intercept)     nletters
+     567.10        10.48
+</pre>
+
+</section>
+<section id="slide-org6ad260d">
+<h4 id="org6ad260d">A better way</h4>
+<ul>
+<li>So we ask for the summary of the linear model
+<ul>
+<li>(Counterintuitively, the summary is longer and more informative than the model itself)</li>
+<li>Lots of objects in R can be summarized, not only models</li>
+
+</ul></li>
+
+</ul>
+
+<div class="org-src-container">
+
+<pre  class="src src-R">summary<span style="color: #b0c4de;">(</span>lm<span style="color: #b0c4de;">(</span>rt ~ nletters, data <span style="color: #7fffd4;">=</span> dat<span style="color: #b0c4de;">))</span>
+</pre>
+</div>
+
+<pre class="example" style="font-size:30%">
+Call:
+lm(formula = rt ~ nletters, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max
+-414.94 -132.50  -52.48   73.06 1706.50
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) 567.1043     6.5274   86.88   &lt;2e-16 ***
+nletters     10.4799     0.9756   10.74   &lt;2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 202.5 on 16952 degrees of freedom
+  (3412 observations deleted due to missingness)
+Multiple R-squared:  0.00676,	Adjusted R-squared:  0.006702
+F-statistic: 115.4 on 1 and 16952 DF,  p-value: &lt; 2.2e-16
+</pre>
+
+</section>
+<section id="slide-orge2e4678">
+<h4 id="orge2e4678">Trying it ourselves</h4>
+<ul>
+<li>Try to fit a model that has both <code>nletters</code> and <code>summed.bigram</code> as predictors</li>
+<li>What do you notice?</li>
+
+</ul>
+
+</section>
+<section id="slide-orgf72d0eb">
+<h4 id="orgf72d0eb">P-values</h4>
+<ul>
+<li>There are two types of p-values in the model output</li>
+<li>The first: associated with each predictor
+<ul>
+<li>A statistical test: does the model fit better with this predictor or without it?</li>
+
+</ul></li>
+<li>The second: associated with the model
+<ul>
+<li>Does this model fit better than no model at all</li>
+<li>Unless you are doing something really silly, this will always be very small</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section >
+
+<ul>
+<li>Experiment with adding and subtracting predictors in Exercise 2
+<ul>
+<li>What do you notice about the p-values?
+Is it possible to give one single “true” p-value for each predictor?</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org63e753a">
+<h3 id="org63e753a">Nonlinear terms</h3>
+<ul>
+<li>The popularity of linear regression raises the question: what about cases where the linearity assumption doesnʼt hold?</li>
+<li>Weʼll consider two cases:
+<ul>
+<li>Non-numeric predictors</li>
+<li>Curvilinear relationships</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgeb7d3f8">
+<h4 id="orgeb7d3f8">Nonnumeric predictors</h4>
+<ul>
+<li>What if we are trying to predict reaction time by lexicality?</li>
+<li>575 + 10 * (is not a word) = ???</li>
+<li>What happens if we try this in the interactive model?</li>
+<li>One value is the default, the other is assigned a predictor</li>
+<li>What happens with a ternary value like <code>part3</code>?</li>
+<li>Is this the only way to do it?</li>
+
+</ul>
+
+</section>
+<section id="slide-org842fd04">
+<h4 id="org842fd04">Curvilinear predictors</h4>
+<ul>
+<li><p>
+Itʼs also possible for a predictor to have a curvilinear relationship with an outcome
+</p>
+
+
+<div id="orged3b92d" class="figure">
+<p><object type="image/svg+xml" data="sickle-cell.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div></li>
+
+<li>This doesnʼt come up in our example dataset, but it is worth keeping in mind</li>
+
+</ul>
+
+</section>
+<section id="slide-org6c43cd0">
+<h3 id="org6c43cd0">Interaction terms</h3>
+<div class="outline-text-3" id="text-org6c43cd0">
+</div>
+</section>
+<section id="slide-orgf3d5d1d">
+<h4 id="orgf3d5d1d">Interaction terms</h4>
+<ul>
+<li>A single predictor might have different effects in different contexts</li>
+<li>An example from our dataset: lexicality and bigram frequency</li>
+
+</ul>
+
+
+<div id="orgfd5ad5f" class="figure">
+<p><object type="image/svg+xml" data="interaction1.svg" class="fragment">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section >
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="interaction2.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-orgf8872b5">
+<h4 id="orgf8872b5">Whats going on here?</h4>
+<ul>
+<li>(NB this is not an attempt to actually explain this phenomenon)</li>
+<li>Maybe: there is a difference in what speakers do for words and non-words</li>
+<li>For words:
+<ul style="font-size:50%">
+<li>Look the word up by meaning</li>
+<li>“Hash table” algorithm</li>
+<li>Takes ~constant time</li>
+
+</ul></li>
+<li>For non-words:
+<ul style="font-size:50%">
+<li>Search through all the words you know to make sure itʼs not there</li>
+<li>“List search” algorithm</li>
+<li>Takes time proportional to the wordʼs length</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org60e0100">
+<h4 id="org60e0100">Illustration</h4>
+<ul>
+<li>The most bigram-frequent non-word in the data is “trainstessed”
+<ul style="font-size:50%">
+<li>It looks very word-like</li>
+<li>It contains meaningful morphemes (train, -ed)</li>
+<li>Itʼs long (12 letters, 3 syllables)</li>
+<li>It takes a (relatively) long time to satisfy ourselves that this is not in fact a word</li>
+
+</ul></li>
+<li>Compare “gix”, one of the most bigram-infrequent words in the sample
+<ul>
+<li>We can rapidly be sure itʼs not a word</li>
+
+</ul></li>
+<li>(Aside: bigram frequency should probably be normalized by length)</li>
+
+</ul>
+
+</section>
+<section id="slide-orgc7b5a68">
+<h4 id="orgc7b5a68">Modeling</h4>
+<ul>
+<li>Whatever the underlying reasons, we want our model to take this property of the data into account</li>
+<li><p>
+If we ignore it, we will just fit one effect for summed bigram frequency
+</p>
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="interaction3.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orgcebab2c">
+<h4 id="orgcebab2c">Interactions in R</h4>
+<ul>
+<li>In order to fit an interaction term in R, we use the multiplication notation: <code>predictor1*predictor2</code></li>
+<li>This is shorthand for three predictors:
+<ul>
+<li><code>predictor1</code></li>
+<li><code>predictor2</code></li>
+<li>the two predictors multiplied together (notated <code>predictor1:predictor2</code>)</li>
+
+</ul></li>
+<li>Look at Exercise 3, which is the same as Exercise 2 with the choice added for an interaction term
+<ul>
+<li>Can you demonstrate that the <code>*</code> notation adds the predictors I said it should?  That is, that you can simply write <code>summed.bigram*lexicality</code>, not <code>summed.bigram*lexicality + summed.bigram + lexicality</code>?</li>
+<li>What happens to the p-values when you add the interaction term?</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org3227d30">
+<h3 id="org3227d30">Nonlinear outputs</h3>
+<ul>
+<li>logistic etc.</li>
+<li>log rt</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgf735fe6">
+<h2 id="orgf735fe6">Checking assumptions</h2>
+<div class="outline-text-2" id="text-orgf735fe6">
+</div>
+</section>
+<section id="slide-orgb2ed7e8">
+<h3 id="orgb2ed7e8">Assumptions of linear models</h3>
+<ul>
+<li>Letʼs get back to our data compression example for a moment</li>
+<li>Which is more compressed?</li>
+
+</ul>
+
+<div class="org-center">
+<pre class="example">
+6 6 6 6 5 4 2 6 6 3 1 4 5 1 2 2 1 2 3 6 4 6 4 6 2 1
+2 6 2 2 6 1 6 1 6 3 6 6 2 2 2 4 3 5 5 3 5 2 3 4 4 6
+2 4 4 4 6 4 2 1 5 4 4 3 2 5 5 3 1 2 1 4 1 3 6 4 5 3
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">1</td>
+<td class="org-right">2</td>
+<td class="org-right">3</td>
+<td class="org-right">4</td>
+<td class="org-right">5</td>
+<td class="org-right">6</td>
+</tr>
+
+<tr>
+<td class="org-right">16.6%</td>
+<td class="org-right">16.6%</td>
+<td class="org-right">16.6%</td>
+<td class="org-right">16.6%</td>
+<td class="org-right">16.6%</td>
+<td class="org-right">16.6%</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org5fa6a89">
+<h3 id="org5fa6a89">Compression gone awry</h3>
+
+<div class="figure">
+<p><img src="snakesladders.jpg" alt="snakesladders.jpg" width="30%" />
+</p>
+</div>
+
+<ul>
+<li>2 5 vs. 5 2</li>
+
+</ul>
+
+</section>
+<section id="slide-org189ed5c">
+<h3 id="org189ed5c">Residuals and compression</h3>
+<ul>
+<li>Residuals in a model are a long list of random numbers
+<ul>
+<li>They look like rolls of a die</li>
+
+</ul></li>
+<li>They compress much better if order doesnʼt matter</li>
+<li>Important assumption of linear models: <i>homoskedastic residuals</i>
+<ul>
+<li>“same variance”</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org64a4bce">
+<h3 id="org64a4bce">Plotting to check homoskedasticity</h3>
+<ul>
+<li>Homoskedasticity can be checked on a fitted-residual plot</li>
+
+</ul>
+
+
+<div id="orgc8eceb9" class="figure">
+<p><object type="image/svg+xml" data="fitted-resid.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section >
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="fitted-resid-ln.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org02d3584">
+<h2 id="org02d3584">foo</h2>
+<ul>
+<li>next: heteroskedastic residuals</li>
+<li>dependent and independent variables</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org8d04702">
+<h2 id="org8d04702">things to add</h2>
+<p>
+when the universe of data is closed, you can always get better performance by adding more predictors
+</p>
+<ul>
+<li>importance of interpretability</li>
+<li>cross validation methods</li>
+
+</ul>
+
+
+<p>
+independence assumption: dice example / chutes and ladders
+</p>
+</section>
+</section>
+</div>
+</div>
+<script src="https://aecay.github.io/leeds-modeling-workshop/revealjs/lib/js/head.min.js"></script>
+<script src="https://aecay.github.io/leeds-modeling-workshop/revealjs/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
