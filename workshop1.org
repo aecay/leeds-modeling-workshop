@@ -10,8 +10,9 @@
 
 * prelim                                                           :noexport:
 #+begin_src emacs-lisp
-  (setq org-reveal-root "file:///home/aecay/Downloads/reveal.js-3.5.0"
-        org-reveal-hlevel 2)
+  (setq org-reveal-root "https://aecay.github.io/leeds-modeling-workshop/revealjs/"
+        ;org-reveal-hlevel 2
+        )
 
   (defun awe-ox-reveal-fragment (element val)
     (org-element-put-property element :attr_reveal `(":frag" ,val)))
@@ -30,9 +31,16 @@
 #+end_src
 
 * Introduction
-** TODO Pre-intro
-more about goals
-** Introduction
+** Goals of this talk
+
+- Preparation for mixed-effects workshop in June
+- Provide an overview of topics in mixed-effects modeling
+- “Zero to sixty”
+- (unfortunately) not an in-depth tutorial
+  - Though we will be interacting with R
+- Aim: provide participants with the “lay of the land” in order to ask the right questions
+
+** Background on modeling
 *** What modeling is
 
 - There are a two fundamental ways of looking at statistical modeling
@@ -108,8 +116,7 @@ Alic\nothing{}*y*\nothing{}was beginning to get ver\nothing{}*e␣* tired of sit
 [[file:hot-air-balloon.jpg]]
 
 * Compression and models
-** Compression and models
-*** Lossy compression and models
+** Lossy compression and models
 
 - The kinds of statistical models weʼll be talking about in these seminars are lossy
 - They divide the information in the data into two parts
@@ -117,7 +124,7 @@ Alic\nothing{}*y*\nothing{}was beginning to get ver\nothing{}*e␣* tired of sit
   - Residuals
 - R^2 is a measure of how much of the variance in the data is explained by the parameters
 
-*** Exercise 1
+** Exercise 1
 
 - Open up R on your machine
 - Run this code:
@@ -128,7 +135,7 @@ library(shiny)
 runGitHub("aecay/leeds-modeling-wkshp-2017", subdir = "shiny/w1/")
 #+end_src
 
-*** What are we doing?
+** What are we doing?
 
 - Dataset of reaction times in a lexical decision task, from [[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278621/][the British Lexicon Project]].
 - Random subset of 500 words (to keep computations managable)
@@ -143,7 +150,7 @@ runGitHub("aecay/leeds-modeling-wkshp-2017", subdir = "shiny/w1/")
   - lett.odd :: did the word start with an odd-numbered letter of the alphabet
 - See what you can come up with...
 
-*** What have we learned
+** What have we learned
 
 - Adding linguistically useful predictors to the model increases the R^2
 - But so does adding completely random predictors!
@@ -405,8 +412,39 @@ The fragment class is applied to the object tag, not the div class=figure elemen
 
 ** Nonlinear outputs
 
-- logistic etc.
-- log rt
+*** Non-numeric outputs
+
+- What if your output isnʼt numeric?
+- Forced choice judgment task, corpus data (ing vs. inʼ)
+- One possible answer: predict the “chance” of one outcome or the other
+  - If prediction is > 0.5 guess “yes”, else “no”
+- This basically works
+
+*** The logistic curve
+
+- But not with a linear model
+
+#+name: logistic
+#+header: :width 4 :height 4
+#+begin_src R :results value graphics :file-ext svg :exports results
+  logistic <- data.frame(x = seq(-4,4,length.out=200))
+  logistic$y <- plogis(logistic$x)
+  ggplot(logistic, aes(x = x, y = y)) + geom_line()
+#+end_src
+
+#+name: fig:logistic
+#+results: logistic
+[[file:logistic.svg]]
+
+** Non-linear outputs
+
+- What if the relationship between the input and the output is not linear?
+- If I give my tomatoes 1 gallon of water, they grow a foot
+  - 100 gallons \to 100 feet?
+- The solution is transforming the data
+  - Square, square root, logarithm...
+  - Sometimes you know what to use, sometimes you try to figure it out from the data
+- More on this topic coming up right now...
 
 * Checking assumptions
 
@@ -473,15 +511,86 @@ The fragment class is applied to the object tag, not the div class=figure elemen
 #+RESULTS: fitted-resid-ln
 [[file:fitted-resid-ln.svg]]
 
-* foo
+* Homoskedasticity and mixed effects models
 
-- next: heteroskedastic residuals
-- dependent and independent variables
-* things to add
+** The problem
 
-when the universe of data is closed, you can always get better performance by adding more predictors
-- importance of interpretability
-- cross validation methods
+- We can never, ever assume that residuals are homoskedastic in linguistics
+  - Speakers
+  - Words
+- We need to tell the model about this, or it will be misled
+- The answer: mixed-effects models
 
+** Towards a solution
 
-independence assumption: dice example / chutes and ladders
+- Predictors in a model “control” for sources of variability
+- One idea: letʼs just add another predictor to the model for subject, to “control” subject level-variability
+  - ~outcome ~ predictor1 + predictor2 + subject~
+- Whatʼs wrong with this idea?
+  - It introduces lots of parameters to the model
+  - It allows subjects to vary too much
+- This second one Iʼll call “parameter identification”
+  - Is an effect due to (e.g.) gender, or is it because Peter, Paul, and Mary are just different people?
+
+** Mixed-effects models
+
+- Intuition: most subjects are like the average subject
+- This sounds trivial, but itʼs not
+  - Compare: most treatments are like the average treatment
+  - ...placebo, caffeine, alcohol, Adderall, chloroform
+- Add a predictor to the model per subject, but constrain it to follow a normal distribution
+
+** Benefits of mixed effects models
+
+- Solves the many-parameters problem: we only need 2 (mean, variance) regardless of how many subjects we have
+- Solves the parameter identification problem: only a certain amount of variance can be attributed to subject effect; the rest should be allocated to other predictors (or \epsilon{})
+
+** Mixed effects models: the terminological swamp
+
+- Unfortunately, statisticians/practitioners donʼt have good, consistent vocab for talking about these models
+- Fixed/random effects
+- Mixed-effects
+- Hierarchical models
+- Because of this, one of the easiest ways to communicate about these models is through code
+
+** Mixed effect models in R
+
+- The usual formula syntax is extended to represent mixed-effects models
+  - Technical note: Iʼm using the widespread ~lme4~ syntax in this talk
+
+#+begin_center
+~outcome ~ predictors + (1 | subject)~
+#+end_center
+
+** Experimenting with mixed effects models
+
+- Switch over to exercise 5
+- What you see: a comparison of the coefficients in a mixed and non-mixed model, plus the summary of the mixed model
+- Focus on the latter: whatʼs different?
+  - Scaling of predictors
+  - Random effect estimates
+  - Where are the p-values?
+- Now look at the coefficient comparisons: how does mixed-effects-ness affect the results?
+
+** Results of mixed-effect models
+
+- It looks like mixed effects models havenʼt been very revolutionary here
+- We might have expected this
+  - Balanced design
+  - Many participants
+  - Many stimuli
+  - Itʼs not a bad thing!
+- Where are mixed-effects models more useful?
+  - Unbalanced designs
+  - Corpus work
+  - Clamping down on potentially spurious effects
+  - Conceptually better model
+
+** Wrapping up
+
+- Today
+  - Introduction to modeling issues
+  - Motivation of mixed-effects modeling
+- Next time
+  - How to get p-values back (or more accurately, how to compare models and evaluate the contribution of predictors)
+  - More details on constructing mixed-effects models to fit research scenarios
