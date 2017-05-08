@@ -3,6 +3,7 @@ pacman::p_load(lme4)
 
 if(!exists("dat")) {
     dat <- read.csv("https://github.com/aecay/leeds-modeling-workshop/raw/master/data.csv")
+    dat$part3 <- factor(dat$part3)
 }
 
 dat$nletters.s <- (dat$nletters - mean(dat$nletters)) / sd(dat$nletters)
