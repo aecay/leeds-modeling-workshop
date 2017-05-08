@@ -1,0 +1,487 @@
+#+title: Introduction to statistical modeling
+#+author: Aaron Ecay
+
+#+property: header-args:R :session *stats-wkshp* :eval never-export
+
+#+reveal_theme: black
+#+reveal_trans: default
+
+#+options: title:nil reveal_history:t num:nil toc:nil
+
+* prelim                                                           :noexport:
+#+begin_src emacs-lisp
+  (setq org-reveal-root "file:///home/aecay/Downloads/reveal.js-3.5.0"
+        org-reveal-hlevel 2)
+
+  (defun awe-ox-reveal-fragment (element val)
+    (org-element-put-property element :attr_reveal `(":frag" ,val)))
+
+  (defun awe-ox-reveal-fragment-lists (tree _backend _info)
+    (org-element-map tree 'plain-list
+      (lambda (l)
+        (let* ((len (length (org-element-contents l)))
+               (s (concat "(" (apply #'concat (cl-loop for i from 1 to len collect "t ")) ")")))
+          (awe-ox-reveal-fragment l s))))
+    (org-reveal-filter-parse-tree tree _backend _info))
+
+  ;;; TODO: executes in the wrong order
+  (setq org-export-filter-parse-tree-functions
+        '(awe-ox-reveal-fragment-lists))
+#+end_src
+
+* Introduction
+** TODO Pre-intro
+more about goals
+** Introduction
+*** What modeling is
+
+- There are a two fundamental ways of looking at statistical modeling
+- *Engineering solution* give me the correct answer, it doesnʼt matter how you get there
+- *Scientific solution* tell me how the world works
+- The tension between these ideas underlies a lot of the groundwork of using statistical models for research
+
+*** Another way to look at modeling
+
+- Thereʼs another way to look at statistical models, however
+- Dodges the tension between the scientific and engineering approaches
+- Illuminates some aspects of the structure of modeling problems
+- Models as *data compression*
+
+*** Data compression: the basics
+
+- One kind of familiar data compression: ZIP files
+  - Take a computer file, make it smaller
+- Letʼs try to develop our own miniature compression scheme
+
+#+attr_html: :style font-size:20%
+#+begin_quote
+Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, ‘and what is the use of a book,’ thought Alice ‘without pictures or conversations?’
+#+end_quote
+
+#+reveal: split
+
+the \to z
+
+#+attr_html: :style font-size:30%
+#+begin_quote
+Alice was beginning to get very tired of sitting by her sister on *z* bank, and of having nothing to do: once or twice she had peeped into *z* book her sister was reading, but it had no pictures or conversations in it, ‘and what is *z* use of a book,’ thought Alice ‘without pictures or conversations?’
+#+end_quote
+
+#+reveal: split
+
+ha \to x
+
+#+attr_html: :style font-size:30%
+#+begin_quote
+Alice was beginning to get very tired of sitting by her sister on *z* bank, and of *x*\nothing{}ving nothing to do: once or twice she *x*\nothing{}d peeped into *z* book her sister was reading, but it *x*\nothing{}d no pictures or conversations in it, ‘and w\nothing{}*x*\nothing{}t is *z* use of a book,’ thought Alice ‘without pictures or conversations?’
+#+end_quote
+
+#+reveal: split
+
+e␣ \to y and vice versa
+
+#+attr_html: :style font-size:30%
+#+begin_quote
+Alic\nothing{}*y*\nothing{}was beginning to get ver\nothing{}*e␣* tired of sitting b\nothing{}*e␣* her sister on *z* bank, and of *x*\nothing{}ving nothing to do: onc\nothing{}*y*\nothing{}or twic\nothing{}*y*\nothing{}sh\nothing{}*y*\nothing{}*x*\nothing{}d peeped into *z* book her sister was reading, but it *x*\nothing{}d no pictures or conversations in it, ‘and w\nothing{}*x*\nothing{}t is *z* us\nothing{}*y*\nothing{}of a book,’ thought Alic\nothing{}*y*\nothing{}‘without pictures or conversations?’
+#+end_quote
+
+*** Notes
+
+- “X” is *more likely* to appear than “Y” – we are using the language of probability to describe our model
+- The model is based on assumptions about the world (the English language) that could turn out to be wrong
+- This is a staatistical model!
+
+*** Lossless vs. lossy compression
+
+- This toy example (as well as the ZIP file format) are examples of lossless compression – you can recover the original data with perfect fidelity
+- Not all compression is lossless; some is lossy
+
+*** Lossy compression example
+
+- A familiar example of a lossy compression format is JPEG images
+- Not all the information your eye sees is in the image file
+- JPEG has a model of how images look
+- When the world doesnʼt line up to this model, the result looks bad
+
+#+reveal: split
+
+[[file:hot-air-balloon.jpg]]
+
+* Compression and models
+** Compression and models
+*** Lossy compression and models
+
+- The kinds of statistical models weʼll be talking about in these seminars are lossy
+- They divide the information in the data into two parts
+  - Parameters
+  - Residuals
+- R^2 is a measure of how much of the variance in the data is explained by the parameters
+
+*** Exercise 1
+
+- Open up R on your machine
+- Run this code:
+
+#+begin_src R :eval no
+install.pacakges("shiny")
+library(shiny)
+runGitHub("aecay/leeds-modeling-wkshp-2017", subdir = "shiny/w1/")
+#+end_src
+
+*** What are we doing?
+
+- Dataset of reaction times in a lexical decision task, from [[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278621/][the British Lexicon Project]].
+- Random subset of 500 words (to keep computations managable)
+- Predictors:
+  #+attr_html: :style font-size:30%
+  - lexicality :: word or non-word
+  - nletters :: number of letters in the stimulus
+  - subtlex.frequency :: frequency of the stimulus in the SUBTLEX corpus
+  - summed.bigram :: sum of bigram frequencies in the word
+  - OLD20 :: a measure of neighborhood density
+  - part3 :: remainder when dividing the participantʼs study ID by 3
+  - lett.odd :: did the word start with an odd-numbered letter of the alphabet
+- See what you can come up with...
+
+*** What have we learned
+
+- Adding linguistically useful predictors to the model increases the R^2
+- But so does adding completely random predictors!
+- In fact, adding an extra predictor will *always* increase R^2 (sometimes just imperceptibly)
+- So, we need more sophisticated means than R^2 to determine what predictors to keep in a model
+  - Topic of session 3
+- Now, letʼs shift gears and think about what a predictor is
+
+* Translating hypotheses to models
+** Translating hypotheses to models
+
+- In the previous exercise, we had a very basic notion of predictors
+- Now we want to make this more explicit
+- The basic regression model: linear regression
+  - $\hat{y}_i = \beta x_i + \epsilon_i$
+- Each i is one observation; x is a vector of features; \beta is fit by the model
+- We pick what the elements of $x_i$ are
+  - The structure of x corresponds to the structure of our hypotheses
+
+*** (In)dependent variables
+
+- The most common way of describing the structure of a statistical model uses the terms “dependent variable” and “independent variable”
+  - dependent variable :: the y in the equation.  The value of y depends on the value of x.
+  - independent variable :: the x in the equation.  It does not depend on y.
+
+#+reveal: split
+
+- This terminology is a mess
+  - It implies that x is causally prior to y, but this is not necessarily the case
+  - It implies that the xʼs are independent of each other, but (ditto)
+  - Itʼs confusing
+
+#+reveal: split
+
+- Weʼre stuck with it, though
+- Sometimes the independent variables (xʼs) are also referred to as predictors, and y as the outcome.
+  A bit clearer, but not totally standard.
+  - Iʼll try to use this terminology for the presentation
+
+** Linear terms
+
+- The simplest statistical model is of a linear relationship between a predictor and an outcome
+  - F° = $\frac{9}{5}$ C° + 32
+- Because of this, linear models are the most often used in science
+  - Not necessarily because linear relationships are underlyingly true
+
+#+reveal: split
+
+[[file:extrapolating.png]]
+
+*** Imperfect but useful
+
+- Nonetheless, linear regression can be useful to describe trends in the data
+- R has a special object for describing the structure of models: the formula
+  - ~outcome ~ predictor1 + predictor2 + ...~
+- This resembles, but is not exactly, the mathematical formula for the regression
+  - Itʼs missing the intercept term: the value that ~outcome~ will take on when all the predictors are 0
+  - Itʼs missing \epsilon
+- In order to fit a Linear Model in R, use the ~lm~ function
+  - src_R{lm(outcome ~ predictors, data = my.data)}
+
+*** Fitting linear models in R
+
+- The output of ~lm~ isnʼt maximally informative
+
+#+begin_src R :exports both :results output
+lm(rt ~ nletters, data = dat)
+#+end_src
+
+#+RESULTS:
+:
+: Call:
+: lm(formula = rt ~ nletters, data = dat)
+:
+: Coefficients:
+: (Intercept)     nletters
+:      567.10        10.48
+
+*** A better way
+
+- So we ask for the summary of the linear model
+  - (Counterintuitively, the summary is longer and more informative than the model itself)
+  - Lots of objects in R can be summarized, not only models
+
+#+begin_src R :exports both :results output
+summary(lm(rt ~ nletters, data = dat))
+#+end_src
+
+#+attr_html: :style font-size:30%
+#+RESULTS:
+#+begin_example
+
+Call:
+lm(formula = rt ~ nletters, data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max
+-414.94 -132.50  -52.48   73.06 1706.50
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept) 567.1043     6.5274   86.88   <2e-16 ***
+nletters     10.4799     0.9756   10.74   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 202.5 on 16952 degrees of freedom
+  (3412 observations deleted due to missingness)
+Multiple R-squared:  0.00676,	Adjusted R-squared:  0.006702
+F-statistic: 115.4 on 1 and 16952 DF,  p-value: < 2.2e-16
+#+end_example
+
+*** Trying it ourselves
+
+- Try to fit a model that has both ~nletters~ and ~summed.bigram~ as predictors
+- What do you notice?
+
+*** P-values
+
+- There are two types of p-values in the model output
+- The first: associated with each predictor
+  - A statistical test: does the model fit better with this predictor or without it?
+- The second: associated with the model
+  - Does this model fit better than no model at all
+  - Unless you are doing something really silly, this will always be very small
+
+#+reveal: split
+
+- Experiment with adding and subtracting predictors in Exercise 2
+  - What do you notice about the p-values?
+    Is it possible to give one single “true” p-value for each predictor?
+
+** Nonlinear terms
+
+- The popularity of linear regression raises the question: what about cases where the linearity assumption doesnʼt hold?
+- Weʼll consider two cases:
+  - Non-numeric predictors
+  - Curvilinear relationships
+
+*** Nonnumeric predictors
+
+- What if we are trying to predict reaction time by lexicality?
+- 575 + 10 * (is not a word) = ???
+- What happens if we try this in the interactive model?
+- One value is the default, the other is assigned a predictor
+- What happens with a ternary value like ~part3~?
+- Is this the only way to do it?
+
+*** Curvilinear predictors
+
+- Itʼs also possible for a predictor to have a curvilinear relationship with an outcome
+
+  #+name: sickle-cell
+  #+header: :width 4 :height 3
+  #+begin_src R :results value graphics :file-ext svg :exports results
+    sc <- data.frame(x = c(0,1,2), y = c(1,2,0))
+
+    ggplot(sc, aes(x = x, y = y)) +
+    geom_line() +
+    xlab("Copies of sickle-cell gene") +
+    ylab("Health")
+  #+end_src
+
+  #+name: fig:sickle-cell
+  #+results: sickle-cell
+  [[file:sickle-cell.svg]]
+
+- This doesnʼt come up in our example dataset, but it is worth keeping in mind
+
+** Interaction terms
+*** Interaction terms
+
+- A single predictor might have different effects in different contexts
+- An example from our dataset: lexicality and bigram frequency
+
+#+name: interaction1
+#+header: :width 6 :height 4
+#+begin_src R :results value graphics :file-ext svg :exports results
+  ggplot(dat, aes(x = summed.bigram, y = rt, color = lexicality)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE)
+#+end_src
+
+#+attr_reveal: :frag t
+#+name: fig:interaction1
+#+results: interaction1
+[[file:interaction1.svg]]
+
+*************** TODO fix visibility                                :noexport:
+The fragment class is applied to the object tag, not the div class=figure element.
+*************** END
+
+
+#+reveal: split
+
+#+name: interaction2
+#+header: :width 6 :height 4
+#+begin_src R :results value graphics :file-ext svg :exports results
+  ggplot(dat, aes(x = summed.bigram, y = rt, color = lexicality)) +
+  geom_smooth(method = "lm", se = FALSE)
+#+end_src
+
+#+RESULTS: interaction2
+[[file:interaction2.svg]]
+
+*** Whats going on here?
+
+- (NB this is not an attempt to actually explain this phenomenon)
+- Maybe: there is a difference in what speakers do for words and non-words
+- For words:
+  #+attr_html: :style font-size:50%
+  - Look the word up by meaning
+  - “Hash table” algorithm
+  - Takes ~constant time
+- For non-words:
+  #+attr_html: :style font-size:50%
+  - Search through all the words you know to make sure itʼs not there
+  - “List search” algorithm
+  - Takes time proportional to the wordʼs length
+
+*** Illustration
+
+- The most bigram-frequent non-word in the data is “trainstessed”
+  #+attr_html: :style font-size:50%
+  - It looks very word-like
+  - It contains meaningful morphemes (train, -ed)
+  - Itʼs long (12 letters, 3 syllables)
+  - It takes a (relatively) long time to satisfy ourselves that this is not in fact a word
+- Compare “gix”, one of the most bigram-infrequent words in the sample
+  - We can rapidly be sure itʼs not a word
+- (Aside: bigram frequency should probably be normalized by length)
+
+*** Modeling
+
+- Whatever the underlying reasons, we want our model to take this property of the data into account
+- If we ignore it, we will just fit one effect for summed bigram frequency
+
+  #+name: interaction3
+  #+header: :width 6 :height 4
+  #+begin_src R :results value graphics :file-ext svg :exports results
+    ggplot(dat, aes(x = summed.bigram, y = rt)) +
+    geom_smooth(aes(color = lexicality), method = "lm", se = FALSE) +
+    geom_smooth(method = "lm", se = FALSE, color = "black", linetype = "dashed")
+  #+end_src
+
+  #+RESULTS: interaction3
+   [[file:interaction3.svg]]
+
+*** Interactions in R
+
+- In order to fit an interaction term in R, we use the multiplication notation: ~predictor1*predictor2~
+- This is shorthand for three predictors:
+  - ~predictor1~
+  - ~predictor2~
+  - the two predictors multiplied together (notated ~predictor1:predictor2~)
+- Look at Exercise 3, which is the same as Exercise 2 with the choice added for an interaction term
+  - Can you demonstrate that the ~*~ notation adds the predictors I said it should?  That is, that you can simply write ~summed.bigram*lexicality~, not ~summed.bigram*lexicality + summed.bigram + lexicality~?
+  - What happens to the p-values when you add the interaction term?
+
+** Nonlinear outputs
+
+- logistic etc.
+- log rt
+
+* Checking assumptions
+
+** Assumptions of linear models
+
+- Letʼs get back to our data compression example for a moment
+- Which is more compressed?
+
+#+begin_center
+#+attr_html: :style font-size:30%
+: 6 6 6 6 5 4 2 6 6 3 1 4 5 1 2 2 1 2 3 6 4 6 4 6 2 1
+: 2 6 2 2 6 1 6 1 6 3 6 6 2 2 2 4 3 5 5 3 5 2 3 4 4 6
+: 2 4 4 4 6 4 2 1 5 4 4 3 2 5 5 3 1 2 1 4 1 3 6 4 5 3
+#+end_center
+
+|     1 |     2 |     3 |     4 |     5 |     6 |
+| 16.6% | 16.6% | 16.6% | 16.6% | 16.6% | 16.6% |
+
+** Compression gone awry
+
+#+attr_html: :width 30%
+[[file:snakesladders.jpg]]
+
+- 2 5 vs. 5 2
+
+** Residuals and compression
+
+- Residuals in a model are a long list of random numbers
+  - They look like rolls of a die
+- They compress much better if order doesnʼt matter
+- Important assumption of linear models: /homoskedastic residuals/
+  - “same variance”
+
+** Plotting to check homoskedasticity
+
+- Homoskedasticity can be checked on a fitted-residual plot
+
+#+name: fitted-resid
+#+header: :width 6 :height 3
+#+begin_src R :results value graphics :file-ext svg :exports results
+  mod <- lm(rt ~ nletters + subtlex.frequency + summed.bigram * lexicality + OLD20 + lett.odd + part3, data = dat)
+  ggplot(data.frame(x = fitted(mod), y = resid(mod)), aes(x = x, y = y)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(se=FALSE) +
+  xlab("Fitted") + ylab("Residual")
+#+end_src
+
+#+name: fig:fitted-resid
+#+results: fitted-resid
+[[file:fitted-resid.svg]]
+
+#+reveal: split
+
+#+name: fitted-resid-ln
+#+header: :width 6 :height 3
+#+begin_src R :results value graphics :file-ext svg :exports results
+  mod <- lm(log(rt) ~ nletters + subtlex.frequency + summed.bigram * lexicality + OLD20 + lett.odd + part3, data = dat)
+  ggplot(data.frame(x = fitted(mod), y = resid(mod)), aes(x = x, y = y)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(se=FALSE) +
+  xlab("Fitted") + ylab("Residual")
+#+end_src
+
+#+RESULTS: fitted-resid-ln
+[[file:fitted-resid-ln.svg]]
+
+* foo
+
+- next: heteroskedastic residuals
+- dependent and independent variables
+* things to add
+
+when the universe of data is closed, you can always get better performance by adding more predictors
+- importance of interpretability
+- cross validation methods
+
+
+independence assumption: dice example / chutes and ladders
