@@ -1,3 +1,3 @@
 # Welcome
 
-You may be looking for the [slides](https://aecay.github.io/leeds-modeling-workshop).
+You may be looking for the [slides](https://aecay.github.io/leeds-modeling-workshop/workshop1.html).
