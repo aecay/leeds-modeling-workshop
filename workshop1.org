@@ -134,7 +134,7 @@ Alic\nothing{}*y*\nothing{}was beginning to get ver\nothing{}*e␣* tired of sit
 #+begin_src R :eval no
 install.pacakges("shiny")
 library(shiny)
-runGitHub("aecay/leeds-modeling-wkshp-2017", subdir = "shiny/w1/")
+runGitHub("aecay/leeds-modeling-workshop", subdir = "w1/")
 #+end_src
 
 ** What are we doing?
