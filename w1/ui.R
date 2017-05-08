@@ -1,3 +1,5 @@
+dat <- read.csv("https://github.com/aecay/leeds-modeling-workshop/raw/master/data.csv")
+
 exercise1 <- tabPanel("Exercise 1",
                      mainPanel(tags$p("The goal of this exercise is to build a model that maximizes",
                                       "the R", tags$sup("2"), ".  You are given a dataset of response times",
