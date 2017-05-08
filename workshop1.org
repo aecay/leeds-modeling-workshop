@@ -28,8 +28,14 @@
   ;;; TODO: executes in the wrong order
   (setq org-export-filter-parse-tree-functions
         '(awe-ox-reveal-fragment-lists))
+
+  (setq-local org-reveal-title-slide
+              "<h1>%t</h1>")
 #+end_src
 
+
+
+** TODO get rid of the auto-generated org-fooasdf IDs..they mess up the history hash
 * Introduction
 ** Goals of this talk
 

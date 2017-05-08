@@ -27,17 +27,17 @@
 <body>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide"><h2 class="author">Aaron Ecay</h2><p class="date">Created: 2017-05-08 Mon 11:36</p>
+<section id="sec-title-slide"><h1>Introduction to statistical modeling</h1>
 </section>
 
 <section>
-<section id="slide-org3c4d7b6">
-<h2 id="org3c4d7b6">Introduction</h2>
-<div class="outline-text-2" id="text-org3c4d7b6">
+<section id="slide-org04bff68">
+<h2 id="org04bff68">Introduction</h2>
+<div class="outline-text-2" id="text-org04bff68">
 </div>
 </section>
-<section id="slide-org73861ed">
-<h3 id="org73861ed">Goals of this talk</h3>
+<section id="slide-org53cf2e4">
+<h3 id="org53cf2e4">Goals of this talk</h3>
 <ul>
 <li class="fragment">Preparation for mixed-effects workshop in June</li>
 <li class="fragment">Provide an overview of topics in mixed-effects modeling</li>
@@ -52,13 +52,13 @@
 </ul>
 
 </section>
-<section id="slide-orgf61bedb">
-<h3 id="orgf61bedb">Background on modeling</h3>
-<div class="outline-text-3" id="text-orgf61bedb">
+<section id="slide-org1c462b9">
+<h3 id="org1c462b9">Background on modeling</h3>
+<div class="outline-text-3" id="text-org1c462b9">
 </div>
 </section>
-<section id="slide-org082af74">
-<h4 id="org082af74">What modeling is</h4>
+<section id="slide-org2371658">
+<h4 id="org2371658">What modeling is</h4>
 <ul>
 <li class="fragment">There are a two fundamental ways of looking at statistical modeling</li>
 <li class="fragment"><b>Engineering solution</b> give me the correct answer, it doesnʼt matter how you get there</li>
@@ -68,8 +68,8 @@
 </ul>
 
 </section>
-<section id="slide-org71bd7ae">
-<h4 id="org71bd7ae">Another way to look at modeling</h4>
+<section id="slide-org76c4f34">
+<h4 id="org76c4f34">Another way to look at modeling</h4>
 <ul>
 <li class="fragment">Thereʼs another way to look at statistical models, however</li>
 <li class="fragment">Dodges the tension between the scientific and engineering approaches</li>
@@ -79,8 +79,8 @@
 </ul>
 
 </section>
-<section id="slide-orgd943257">
-<h4 id="orgd943257">Data compression: the basics</h4>
+<section id="slide-orgcf9b1f2">
+<h4 id="orgcf9b1f2">Data compression: the basics</h4>
 <ul>
 <li class="fragment">One kind of familiar data compression: ZIP files
 <ul>
@@ -137,8 +137,8 @@ Alic<b>y</b>was beginning to get ver<b>e␣</b> tired of sitting b<b>e␣</b> he
 </blockquote>
 
 </section>
-<section id="slide-orgda755ad">
-<h4 id="orgda755ad">Notes</h4>
+<section id="slide-org0b5dd47">
+<h4 id="org0b5dd47">Notes</h4>
 <ul>
 <li class="fragment">“X” is <b>more likely</b> to appear than “Y” – we are using the language of probability to describe our model</li>
 <li class="fragment">The model is based on assumptions about the world (the English language) that could turn out to be wrong</li>
@@ -147,8 +147,8 @@ Alic<b>y</b>was beginning to get ver<b>e␣</b> tired of sitting b<b>e␣</b> he
 </ul>
 
 </section>
-<section id="slide-org5186355">
-<h4 id="org5186355">Lossless vs. lossy compression</h4>
+<section id="slide-orga011b5b">
+<h4 id="orga011b5b">Lossless vs. lossy compression</h4>
 <ul>
 <li class="fragment">This toy example (as well as the ZIP file format) are examples of lossless compression – you can recover the original data with perfect fidelity</li>
 <li class="fragment">Not all compression is lossless; some is lossy</li>
@@ -156,8 +156,8 @@ Alic<b>y</b>was beginning to get ver<b>e␣</b> tired of sitting b<b>e␣</b> he
 </ul>
 
 </section>
-<section id="slide-org45d0c5b">
-<h4 id="org45d0c5b">Lossy compression example</h4>
+<section id="slide-orgb8a6b6e">
+<h4 id="orgb8a6b6e">Lossy compression example</h4>
 <ul>
 <li class="fragment">A familiar example of a lossy compression format is JPEG images</li>
 <li class="fragment">Not all the information your eye sees is in the image file</li>
@@ -178,8 +178,8 @@ Alic<b>y</b>was beginning to get ver<b>e␣</b> tired of sitting b<b>e␣</b> he
 </section>
 </section>
 <section>
-<section id="slide-orga273183">
-<h2 id="orga273183">Compression and models</h2>
+<section id="slide-org81d650b">
+<h2 id="org81d650b">Compression and models</h2>
 <ul>
 <li class="fragment">The kinds of statistical models weʼll be talking about in these seminars are lossy</li>
 <li class="fragment">They divide the information in the data into two parts
@@ -193,8 +193,8 @@ Alic<b>y</b>was beginning to get ver<b>e␣</b> tired of sitting b<b>e␣</b> he
 </ul>
 
 </section>
-<section id="slide-org7b6de9e">
-<h3 id="org7b6de9e">Exercise 1</h3>
+<section id="slide-orgc272414">
+<h3 id="orgc272414">Exercise 1</h3>
 <ul>
 <li class="fragment">Open up R on your machine</li>
 <li class="fragment">Run this code:</li>
@@ -210,8 +210,8 @@ runGitHub<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"ae
 </div>
 
 </section>
-<section id="slide-org2d22590">
-<h3 id="org2d22590">What are we doing?</h3>
+<section id="slide-org847c09a">
+<h3 id="org847c09a">What are we doing?</h3>
 <ul>
 <li class="fragment">Dataset of reaction times in a lexical decision task, from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3278621/">the British Lexicon Project</a>.</li>
 <li class="fragment">Random subset of 500 words (to keep computations managable)</li>
@@ -239,8 +239,8 @@ runGitHub<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"ae
 </ul>
 
 </section>
-<section id="slide-org16eb50c">
-<h3 id="org16eb50c">What have we learned</h3>
+<section id="slide-orge5e4b67">
+<h3 id="orge5e4b67">What have we learned</h3>
 <ul>
 <li class="fragment">Adding linguistically useful predictors to the model increases the R<sup>2</sup></li>
 <li class="fragment">But so does adding completely random predictors!</li>
@@ -257,8 +257,8 @@ runGitHub<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"ae
 </section>
 </section>
 <section>
-<section id="slide-org8aa114c">
-<h2 id="org8aa114c">Translating hypotheses to models</h2>
+<section id="slide-orgff96e2b">
+<h2 id="orgff96e2b">Translating hypotheses to models</h2>
 <ul style="font-size:80%">
 <li class="fragment">In the previous exercise, we had a very basic notion of predictors</li>
 <li class="fragment">Now we want to make this more explicit</li>
@@ -277,8 +277,8 @@ runGitHub<span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"ae
 </ul>
 
 </section>
-<section id="slide-org673ab70">
-<h3 id="org673ab70">(In)dependent variables</h3>
+<section id="slide-orgc554b57">
+<h3 id="orgc554b57">(In)dependent variables</h3>
 <ul>
 <li class="fragment">The most common way of describing the structure of a statistical model uses the terms “dependent variable” and “independent variable”
 <dl>
@@ -319,8 +319,8 @@ A bit clearer, but not totally standard.
 </ul>
 
 </section>
-<section id="slide-orga40b30d">
-<h3 id="orga40b30d">Linear terms</h3>
+<section id="slide-org2a4db76">
+<h3 id="org2a4db76">Linear terms</h3>
 <ul>
 <li class="fragment">The simplest statistical model is of a linear relationship between a predictor and an outcome
 <ul>
@@ -345,8 +345,8 @@ A bit clearer, but not totally standard.
 </div>
 
 </section>
-<section id="slide-org4e83a8a">
-<h4 id="org4e83a8a">Imperfect but useful</h4>
+<section id="slide-org75e6e73">
+<h4 id="org75e6e73">Imperfect but useful</h4>
 <ul style="font-size:70%">
 <li class="fragment">Nonetheless, linear regression can be useful to describe trends in the data</li>
 <li class="fragment">R has a special object for describing the structure of models: the formula
@@ -369,8 +369,8 @@ A bit clearer, but not totally standard.
 </ul>
 
 </section>
-<section id="slide-org685ec21">
-<h4 id="org685ec21">Fitting linear models in R</h4>
+<section id="slide-org8456687">
+<h4 id="org8456687">Fitting linear models in R</h4>
 <ul>
 <li class="fragment">The output of <code>lm</code> isnʼt maximally informative</li>
 
@@ -392,8 +392,8 @@ Coefficients:
 </pre>
 
 </section>
-<section id="slide-org6d19f70">
-<h4 id="org6d19f70">A better way</h4>
+<section id="slide-org7a33686">
+<h4 id="org7a33686">A better way</h4>
 <ul>
 <li class="fragment">So we ask for the summary of the linear model
 <ul>
@@ -432,8 +432,8 @@ F-statistic: 115.4 on 1 and 16952 DF,  p-value: &lt; 2.2e-16
 </pre>
 
 </section>
-<section id="slide-org5b50ca6">
-<h4 id="org5b50ca6">Trying it ourselves</h4>
+<section id="slide-orgba8d19a">
+<h4 id="orgba8d19a">Trying it ourselves</h4>
 <ul>
 <li class="fragment">Try to fit a model that has both <code>nletters</code> and <code>summed.bigram</code> as predictors</li>
 <li class="fragment">What do you notice?</li>
@@ -441,8 +441,8 @@ F-statistic: 115.4 on 1 and 16952 DF,  p-value: &lt; 2.2e-16
 </ul>
 
 </section>
-<section id="slide-org4e4b4de">
-<h4 id="org4e4b4de">P-values</h4>
+<section id="slide-orgaf4351f">
+<h4 id="orgaf4351f">P-values</h4>
 <ul>
 <li class="fragment">There are two types of p-values in the model output</li>
 <li class="fragment">The first: associated with each predictor
@@ -473,8 +473,8 @@ Is it possible to give one single “true” p-value for each predictor?</li>
 </ul>
 
 </section>
-<section id="slide-org73a7393">
-<h3 id="org73a7393">Nonlinear terms</h3>
+<section id="slide-org676d31f">
+<h3 id="org676d31f">Nonlinear terms</h3>
 <ul>
 <li class="fragment">The popularity of linear regression raises the question: what about cases where the linearity assumption doesnʼt hold?</li>
 <li class="fragment">Weʼll consider two cases:
@@ -487,8 +487,8 @@ Is it possible to give one single “true” p-value for each predictor?</li>
 </ul>
 
 </section>
-<section id="slide-orgd948b06">
-<h4 id="orgd948b06">Nonnumeric predictors</h4>
+<section id="slide-orgd5c777e">
+<h4 id="orgd5c777e">Nonnumeric predictors</h4>
 <ul>
 <li class="fragment">What if we are trying to predict reaction time by lexicality?</li>
 <li class="fragment">575 + 10 * (is not a word) = ???</li>
@@ -500,15 +500,15 @@ Is it possible to give one single “true” p-value for each predictor?</li>
 </ul>
 
 </section>
-<section id="slide-orgbc75b82">
-<h4 id="orgbc75b82">Curvilinear predictors</h4>
+<section id="slide-orgb4b79ea">
+<h4 id="orgb4b79ea">Curvilinear predictors</h4>
 <ul>
 <li class="fragment"><p>
 Itʼs also possible for a predictor to have a curvilinear relationship with an outcome
 </p>
 
 
-<div id="orgc9b84c4" class="figure">
+<div id="org0586ea2" class="figure">
 <p><object type="image/svg+xml" data="sickle-cell.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -519,8 +519,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org7aac353">
-<h3 id="org7aac353">Interaction terms</h3>
+<section id="slide-org81274ad">
+<h3 id="org81274ad">Interaction terms</h3>
 <ul>
 <li class="fragment">A single predictor might have different effects in different contexts</li>
 <li class="fragment">An example from our dataset: lexicality and bigram frequency</li>
@@ -528,7 +528,7 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 
-<div id="orgeff0a6c" class="figure">
+<div id="orgfa1d62d" class="figure">
 <p><object type="image/svg+xml" data="interaction1.svg" class="fragment">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -545,8 +545,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-org6904837">
-<h4 id="org6904837">Whats going on here?</h4>
+<section id="slide-org6d11940">
+<h4 id="org6d11940">Whats going on here?</h4>
 <ul>
 <li class="fragment">(NB this is not an attempt to actually explain this phenomenon)</li>
 <li class="fragment">Maybe: there is a difference in what speakers do for words and non-words</li>
@@ -568,8 +568,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org8a8e92c">
-<h4 id="org8a8e92c">Illustration</h4>
+<section id="slide-org199e20a">
+<h4 id="org199e20a">Illustration</h4>
 <ul>
 <li class="fragment">The most bigram-frequent non-word in the data is “trainstessed”
 <ul style="font-size:50%">
@@ -589,8 +589,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-orgccb41a3">
-<h4 id="orgccb41a3">Modeling</h4>
+<section id="slide-orge28848c">
+<h4 id="orge28848c">Modeling</h4>
 <ul>
 <li class="fragment">Whatever the underlying reasons, we want our model to take this property of the data into account</li>
 <li class="fragment"><p>
@@ -607,8 +607,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org209a690">
-<h4 id="org209a690">Interactions in R</h4>
+<section id="slide-orgfe5e49e">
+<h4 id="orgfe5e49e">Interactions in R</h4>
 <ul>
 <li class="fragment">In order to fit an interaction term in R, we use the multiplication notation: <code>predictor1*predictor2</code></li>
 <li class="fragment">This is shorthand for three predictors:
@@ -635,13 +635,13 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-orgcbb8108">
-<h3 id="orgcbb8108">Nonlinear outputs</h3>
-<div class="outline-text-3" id="text-orgcbb8108">
+<section id="slide-org751cb0e">
+<h3 id="org751cb0e">Nonlinear outputs</h3>
+<div class="outline-text-3" id="text-org751cb0e">
 </div>
 </section>
-<section id="slide-org540c8d7">
-<h4 id="org540c8d7">Non-numeric outputs</h4>
+<section id="slide-org9f6ff3e">
+<h4 id="org9f6ff3e">Non-numeric outputs</h4>
 <ul>
 <li class="fragment">What if your output isnʼt numeric?</li>
 <li class="fragment">Forced choice judgment task, corpus data (ing vs. inʼ)</li>
@@ -655,23 +655,23 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-orgc83bb84">
-<h4 id="orgc83bb84">The logistic curve</h4>
+<section id="slide-orga4d669a">
+<h4 id="orga4d669a">The logistic curve</h4>
 <ul>
 <li class="fragment">But not with a linear model</li>
 
 </ul>
 
 
-<div id="orgebd9885" class="figure">
+<div id="orgf953bc3" class="figure">
 <p><object type="image/svg+xml" data="logistic.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
 </div>
 
 </section>
-<section id="slide-org4a4dd8d">
-<h3 id="org4a4dd8d">Non-linear outputs</h3>
+<section id="slide-orgc362333">
+<h3 id="orgc362333">Non-linear outputs</h3>
 <ul>
 <li class="fragment">What if the relationship between the input and the output is not linear?</li>
 <li class="fragment">If I give my tomatoes 1 gallon of water, they grow a foot
@@ -692,13 +692,13 @@ Sorry, your browser does not support SVG.</object>
 </section>
 </section>
 <section>
-<section id="slide-org829990f">
-<h2 id="org829990f">Checking assumptions</h2>
-<div class="outline-text-2" id="text-org829990f">
+<section id="slide-org25bfe24">
+<h2 id="org25bfe24">Checking assumptions</h2>
+<div class="outline-text-2" id="text-org25bfe24">
 </div>
 </section>
-<section id="slide-org27f6871">
-<h3 id="org27f6871">Assumptions of linear models</h3>
+<section id="slide-org3cc5449">
+<h3 id="org3cc5449">Assumptions of linear models</h3>
 <ul>
 <li class="fragment">Letʼs get back to our data compression example for a moment</li>
 <li class="fragment">Which is more compressed?</li>
@@ -751,8 +751,8 @@ Sorry, your browser does not support SVG.</object>
 </table>
 
 </section>
-<section id="slide-org73a9d45">
-<h3 id="org73a9d45">Compression gone awry</h3>
+<section id="slide-org75dc983">
+<h3 id="org75dc983">Compression gone awry</h3>
 
 <div class="figure">
 <p><img src="snakesladders.jpg" alt="snakesladders.jpg" width="30%" />
@@ -765,8 +765,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org5547c6a">
-<h3 id="org5547c6a">Residuals and compression</h3>
+<section id="slide-org302b52e">
+<h3 id="org302b52e">Residuals and compression</h3>
 <ul>
 <li class="fragment">Residuals in a model are a long list of random numbers
 <ul>
@@ -783,15 +783,15 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org234c911">
-<h3 id="org234c911">Plotting to check homoskedasticity</h3>
+<section id="slide-orgaa992da">
+<h3 id="orgaa992da">Plotting to check homoskedasticity</h3>
 <ul>
 <li class="fragment">Homoskedasticity can be checked on a fitted-residual plot</li>
 
 </ul>
 
 
-<div id="org181865d" class="figure">
+<div id="org0048a82" class="figure">
 <p><object type="image/svg+xml" data="fitted-resid.svg" class="org-svg">
 Sorry, your browser does not support SVG.</object>
 </p>
@@ -810,13 +810,13 @@ Sorry, your browser does not support SVG.</object>
 </section>
 </section>
 <section>
-<section id="slide-orgb17191b">
-<h2 id="orgb17191b">Homoskedasticity and mixed effects models</h2>
-<div class="outline-text-2" id="text-orgb17191b">
+<section id="slide-orge7a0d16">
+<h2 id="orge7a0d16">Homoskedasticity and mixed effects models</h2>
+<div class="outline-text-2" id="text-orge7a0d16">
 </div>
 </section>
-<section id="slide-org11eedac">
-<h3 id="org11eedac">The problem</h3>
+<section id="slide-org0a8d731">
+<h3 id="org0a8d731">The problem</h3>
 <ul>
 <li class="fragment">We can never, ever assume that residuals are homoskedastic in linguistics
 <ul>
@@ -830,8 +830,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-orge0d1d61">
-<h3 id="orge0d1d61">Towards a solution</h3>
+<section id="slide-org6eb60ae">
+<h3 id="org6eb60ae">Towards a solution</h3>
 <ul>
 <li class="fragment">Predictors in a model “control” for sources of variability</li>
 <li class="fragment">One idea: letʼs just add another predictor to the model for subject, to “control” subject level-variability
@@ -861,8 +861,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org2d394c9">
-<h3 id="org2d394c9">Mixed-effects models</h3>
+<section id="slide-orgb13ecb3">
+<h3 id="orgb13ecb3">Mixed-effects models</h3>
 <ul>
 <li class="fragment">Intuition: most subjects are like the average subject</li>
 <li class="fragment">This sounds trivial, but itʼs not
@@ -876,8 +876,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org1b90c9a">
-<h3 id="org1b90c9a">Benefits of mixed effects models</h3>
+<section id="slide-org3ef0843">
+<h3 id="org3ef0843">Benefits of mixed effects models</h3>
 <ul>
 <li class="fragment">Solves the many-parameters problem: we only need 2 (mean, variance) regardless of how many subjects we have</li>
 <li class="fragment">Solves the parameter identification problem: only a certain amount of variance can be attributed to subject effect; the rest should be allocated to other predictors (or &epsilon;)</li>
@@ -885,8 +885,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org4f54267">
-<h3 id="org4f54267">Mixed effects models: the terminological swamp</h3>
+<section id="slide-orgc078833">
+<h3 id="orgc078833">Mixed effects models: the terminological swamp</h3>
 <ul>
 <li class="fragment">Unfortunately, statisticians/practitioners donʼt have good, consistent vocab for talking about these models</li>
 <li class="fragment">Fixed/random effects</li>
@@ -897,8 +897,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-orge2390d5">
-<h3 id="orge2390d5">Mixed effect models in R</h3>
+<section id="slide-orgf36a427">
+<h3 id="orgf36a427">Mixed effect models in R</h3>
 <ul>
 <li class="fragment">The usual formula syntax is extended to represent mixed-effects models
 <ul>
@@ -915,8 +915,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-org8672906">
-<h3 id="org8672906">Experimenting with mixed effects models</h3>
+<section id="slide-org76268ee">
+<h3 id="org76268ee">Experimenting with mixed effects models</h3>
 <ul>
 <li class="fragment">Switch over to exercise 5</li>
 <li class="fragment">What you see: a comparison of the coefficients in a mixed and non-mixed model, plus the summary of the mixed model</li>
@@ -932,8 +932,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-org84e8034">
-<h3 id="org84e8034">Results of mixed-effect models</h3>
+<section id="slide-orgaec5fe1">
+<h3 id="orgaec5fe1">Results of mixed-effect models</h3>
 <ul>
 <li class="fragment">It looks like mixed effects models havenʼt been very revolutionary here</li>
 <li class="fragment">We might have expected this
@@ -963,8 +963,8 @@ Sorry, your browser does not support SVG.</object>
 </ul>
 
 </section>
-<section id="slide-orgac92c55">
-<h3 id="orgac92c55">Wrapping up</h3>
+<section id="slide-orge11e52c">
+<h3 id="orge11e52c">Wrapping up</h3>
 <ul>
 <li class="fragment">Today
 <ul>
