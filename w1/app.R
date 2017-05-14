@@ -1,4 +1,4 @@
-if (!require("pacman")) install.packages("pacman")
+if (!require("pacman")) {install.packages("pacman"); library(pacman)}
 pacman::p_load(lme4)
 
 dat$part3 <- factor(dat$part3)
@@ -129,8 +129,6 @@ server <- function(input, output) {
             formula <- as.formula(paste0("log(rt)~",
                                          paste(input$predictors4, collapse = "+"),
                                          "+(1|participant)+(1|spelling)"))
-            exp <- substitute(lmer(formula, data = dat),
-                              list(formula = formula))
             print(summary(eval(exp)))
         }
     })

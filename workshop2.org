@@ -1,0 +1,182 @@
+#+macro: red @@html:<span style='text-color:red'>@@$1@@html:</span>@@
+#+macro: blue @@html:<span style='text-color:blue'>@@$1@@html:</span>@@
+#+macro: green @@html:<span style='text-color:green'>@@$1@@html:</span>@@
+
+* Introduction
+
+* Collinearity?
+
+* Model comparison methods
+
+** Motivation
+
+- We want to be able to compare models to each other
+- Is model A better than model B
+  - If model A = model B + one predictor, make inferences about that additional predictor
+- As we saw last time, R^2 and p-values are not really good ways of doing this
+
+** Cross-validation
+
+- Perhaps the most intuitively understandable procedure for testing models
+- Procedure:
+  - Split the data in two
+  - Fit the model on one portion of the data (training)
+  - Evaluate how well it fits the other portion (testing)
+- Lots of room for variation in how CV is performed
+
+*** Types of crossvalidation
+
+- Leave-one-out crossvalidation
+  - Training = N-1 datapoints; testing = 1
+  - Repeat N times for each datapoint
+- k-fold CV
+  - A typical value for k is 10
+  - Training = N(k-1)/k; testing = N/k
+  - Repeat k times
+- Holdout CV
+  - A typical value for p is 0.8
+  - Training = pN; testing = (1-p)N
+  - Not repeated
+
+*** Disadvantages to cross-validation
+
+- /Overfitting/ can be a concern, especially when N (dataset size) is small and P (number of predictors) is large
+  - k-fold and LOO CV do not protect against overfitting
+- Thereʼs not a good general rule of thumb for interpreting the difference in predictive performance between two models
+- You probably have to program it yourself
+- Conclusion: crossvalidation is almost never the right choice
+  - That being said, it can be a last resort
+  - Itʼs related to a couple of other things that weʼll discuss
+
+** Likelihood ratio test
+
+- Formally: a test of the hypothesis that certain parameter(s) of a model are fixed at certain values, rather than allowed to vary
+- In practice: a test of whether parameters are equal to zero
+- The LRT can only be validly applied to nested models: the predictors of one model are a proper subset of those in the other
+
+*** TODO to add                                                    :noexport:
+
+use of ML vs REML
+
+** Information criteria
+
+- Information criteria encompass a family of approaches which measure the goodness of fit of a model
+- The mathematical structure of the criteria in this family is very simple
+  - A measure of goodness of fit, the /likelihood/ of the data under the model
+  - A measure of the modelʼs complexity
+- Higher goodness of fit is better; as is lower complexity
+
+*** Using ICs
+
+- Information criteria are inherently relative; you can only use them to compare two models, not to decide how “good” a single model is in isolation
+- Unlike LRT, ICs can be applied to non-nested models
+- But they must be applied to models fit on the same data
+  - Watch out for NAs in R
+
+*** Interpreting ICs
+
+- The model with a lower IC fits better
+- The difference between the two modelsʼ IC indicates how much better the fit is
+- Unlike p-value based methods, there is no cutoff for IC differences, but rather a rule of thumb
+  | Difference | Interpretation                        |
+  | 0–2        | No/only weak evidence of a difference |
+  | 2–6        | Some evidence of a difference         |
+  | 6–10       | Strong evidence                       |
+  | 10+        | Very strong evidence                  |
+
+*** AIC
+
+- Akaike Information Criterion
+- First of the family to be formulated
+- \Delta{}AIC = asymptotic measure of how much more information about the data-generating process one model captures over another
+- Does not assume that the true model is in the set of candidates
+- More open to additional predictors than the BIC
+- Requires small-sample correction (=AICcmodavg= R package)
+
+*** BIC
+
+- Bayesian information criterion
+- \Delta{}BIC = asymptotically related to the Bayes factor between two models
+- Assumes that the true model is in the candidate set
+- Imposes a harsher penalty on new predictors than the AIC does
+
+*** Information criteria and other methods
+
+- AIC is asymptotically equivalent to leave-one-out crossvalidation
+- BIC is asymptotically equivalent to k-fold crossvalidation (where the value of k depends on N)
+- In the case of nested models with one parameter of difference, the AIC and BIC are equivalent to LRTs
+  - \alpha = 0.16 (AIC)
+  - \alpha dependent on the sample size (BIC)
+  - N = 100, \alpha = 0.032
+
+*** Summing up
+
+- Likelihood ratio tests, ICs, and crossvalidation are all closely related
+- Each has advantages and disadvantages
+- All are easy to perform in R, and there is no reason not to perform and report all of them
+  - Except CV
+- Because they are so similar, the results are unlikely to be different in practice
+
+** Shrinkage
+
+- Shrinkage models: a different perspective on variable selection/model comparison
+- Previous techniques have two steps
+  - Fit models
+  - Compare them for GoF/complexity
+- In shrinkage methods, there is only one step
+- The complexity penalty is part of the model fitting
+
+*** Lasso
+:PROPERTIES:
+:reveal_background: lasso-ii.jpg
+:END:
+
+- LASSO penalizes non-zero regression coefficients
+- Can be used to decide between highly correlated variables
+- Can also be used as a general model fitting technique
+
+#+html: <!-- Photo from https://investingcaffeine.com/tag/lasso/; original source unknown -->
+
+*** A LASSO example
+
+From my work on dating OE texts:
+
+#+RESULTS: en-coef
+| Name                | Value | Name                | Value | Name                    | Value |
+|---------------------+-------+---------------------+-------+-------------------------+-------|
+| {{{red(DiagMC)}}}   |  0.11 | VtoC                |  0.12 | {{{green(TopPPSpro)}}}  |  0.09 |
+| {{{red(DiagCC)}}}   |     0 | SCan                |     0 | {{{green(TopObjSpro)}}} |     0 |
+| {{{red(DiagSC)}}}   |     0 | ScrSC               |     0 | {{{green(TopPPSbj)}}}   |     0 |
+| {{{red(AuxVRoot)}}} |     0 | {{{blue(NGenSbj)}}} |     0 | {{{green(TopObjSbj)}}}  |     0 |
+| {{{red(AuxVSC)}}}   |     0 | {{{blue(NGenObj)}}} |  0.41 | NegCon                  |     0 |
+| DiagVP              |     0 | Rel                 |  0.16 | Expl                    |     0 |
+
+*** Another LASSO example
+
+- In the interactive app
+- Choosing between frequency measures in the lexical decision data
+
+** ...fence? etc
+
+** Bayesian methods
+
+* Applying these methods to mixed effects models
+
+* Alternatives to model selection
+
+https://mchankins.wordpress.com/2013/04/21/still-not-significant-2/
+
+- model averaging
+- data visualization
+
+* Resources
+
+- Books
+  - Bates 2010, “lme4: Mixed effects modeling with R” ([[http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf][link]])
+  - Gelman and Hill (2006) “Data Analysis Using Regression and Multilevel/Hierarchical Models” ([[https://www.amazon.co.uk/Analysis-Regression-Multilevel-Hierarchical-Analytical/dp/052168689X/][amazon]])
+  - Kruschke (2010/2014) “Doing Bayesian data analysis” ([[https://www.amazon.co.uk/Doing-Bayesian-Data-Analysis-Second/dp/B013F5JN72/][amazon]])
+- Articles
+  - Kyle and Danʼs article
+- Web resources
+  - R-focused mailing lists: [[https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models][R-sig-ME]] and [[https://mailman.ucsd.edu/mailman/listinfo/ling-r-lang-l][R-lang]]
+  - [[https://stats.stackexchange.com/][Crossvalidated]]
