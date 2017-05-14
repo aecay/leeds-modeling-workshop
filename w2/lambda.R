@@ -29,4 +29,15 @@ for(j in 1:length(lambda))
   Q.start<-glm3$Q_long[[glm3$conv.step+1]]
 }
 
-## opt3<-which.min(BIC_vec)
+opt3<-which.min(BIC_vec)
+
+final.model <- glmmLasso(log(rt) ~
+                         scale(subtlex.frequency) +
+                         scale(celex.frequency) +
+                         scale(celex.frequency.lemma) +
+                         scale(bnc.frequency),
+                         rnd = list(participant = ~1, spelling = ~1),
+                         data = subset(dat, !is.na(rt)),
+                         lambda=lambda[opt3],
+                         switch.NR=FALSE,
+                         final.re=TRUE)
