@@ -131,8 +131,8 @@ pca.ui <- tabPanel("Random effects fitting",
 ui <- fluidPage(busyIndicator(),
                 titlePanel("Mixed effect workshop day 2 demos"),
                 navlistPanel("Case studies",
-                             drop.ui,
                              vif.ui,
+                             drop.ui,
                              glmmLasso.ui,
                              pca.ui))
 

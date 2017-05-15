@@ -42,7 +42,11 @@
 - Last week: the motivation for mixed effects models
 - Today: how to compare models to each other
 
-** TODO Start the interactive app                                 :noexport:
+** Start the interactive app
+
+#+begin_src R
+source("https://goo.gl/WdnYlz")
+#+end_src
 
 * Model comparison methods
 
@@ -211,6 +215,10 @@ From my work on dating OE texts:
   - Any models compared via these methods should have the same random effects
   - They should also be fit by ML (=REML = FALSE= in R)
 
+** Exercise
+
+- “Single variable selecton” in the interactive app
+
 ** LASSO
 
 - A version of LASSO is available for mixed-effects models
@@ -298,7 +306,7 @@ From my work on dating OE texts:
 - We should always fit random by-subject slopes for each experimental variable of interest
   - Justfication: analogy with ANOVA, simulation
 
-** What about by-item slopes
+** What about by-item slopes?
 
 - In the examples Barr et al consider, the fixed effect predictors are all nested within items
   - Word class, length, etc.
@@ -313,20 +321,23 @@ From my work on dating OE texts:
 - Linear model: =outcome ~ predictor1 + predictor2=
 - Random intercepts: =outcome ~ predictor1 + predictor2 + (1 | person) + (1 | word)=
 - Random slopes: =outcome ~ predictor1 + predictor2 + (1 + predictor1 | person) + (1 + predictor2 | word)=
+
 ** Problems with this recommendation
 
 - But, this makes models explode computationally
 - Correlation between random effects
   - Example: quick/careless readers
 - The number of correlation parameters increases proportionally to the square of the number of predictors
-  - (Specifically: $N(N-1)/2$)
+  - Specifically: $N(N-1)/2$
 
-    \[\begin{bmatrix}
-    var_{0,0} & \cdots \\
-    cor_{0,1} & var_{1,1} & \cdots \\
-    cor_{0,2} & cor_{1,2} & var_{2,2} & \cdots
-    \end{bmatrix}
-    \]
+#+reveal: split
+
+\[\begin{bmatrix}
+var_{0,0} & \cdots \\
+cor_{0,1} & var_{1,1} & \cdots \\
+cor_{0,2} & cor_{1,2} & var_{2,2} & \cdots
+\end{bmatrix}
+\]
 
 ** Bates et al. reply
 
@@ -350,6 +361,9 @@ From my work on dating OE texts:
   - Doesnʼt capture the “fast and sloppy reader” case
 - But, it reduces the number of parameters that need to be fitted
   - O(N^2) \to O(N)
+
+#+reveal: split
+
 - Convenient syntax in =lme4= for this
   - =(1 + predictor1 + predictor2 || subject)=
   - Equivalent to =(1 | subject) + (0 + predictor1 | subject) + (0 + predictor2 | subject)=
@@ -361,6 +375,9 @@ From my work on dating OE texts:
 - Notice, in the ZCP model, that the variance estimate for =summed.bigram= is effectively zero
 - Notice that these problems go away in the final model we fit
   - Though we might look with suspicion on the random intercept for =celex.frequency=
+
+#+reveal: split
+
 - Notice that throughout, the fixed effects estimates have not changed
 
 ** So whatʼs the big deal?

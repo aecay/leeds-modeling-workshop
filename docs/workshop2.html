@@ -31,8 +31,8 @@
 </section>
 
 <section>
-<section id="slide-orgc700758">
-<h2 id="orgc700758">Introduction</h2>
+<section id="slide-orgb1db275">
+<h2 id="orgb1db275">Introduction</h2>
 <ul>
 <li class="fragment">Last week: the motivation for mixed effects models</li>
 <li class="fragment">Today: how to compare models to each other</li>
@@ -40,15 +40,24 @@
 </ul>
 
 </section>
+<section id="slide-orgded766a">
+<h3 id="orgded766a">Start the interactive app</h3>
+<div class="org-src-container">
+
+<pre  class="src src-R"><span style="color: #7fffd4;">source</span><span style="color: #b0c4de;">(</span><span style="color: #ffa07a;">"https://goo.gl/WdnYlz"</span><span style="color: #b0c4de;">)</span>
+</pre>
+</div>
+
+</section>
 </section>
 <section>
-<section id="slide-orgeacf48e">
-<h2 id="orgeacf48e">Model comparison methods</h2>
-<div class="outline-text-2" id="text-orgeacf48e">
+<section id="slide-orgb32f419">
+<h2 id="orgb32f419">Model comparison methods</h2>
+<div class="outline-text-2" id="text-orgb32f419">
 </div>
 </section>
-<section id="slide-org61d8e91">
-<h3 id="org61d8e91">Motivation</h3>
+<section id="slide-orgf1bfda6">
+<h3 id="orgf1bfda6">Motivation</h3>
 <ul>
 <li class="fragment">We want to be able to compare models to each other</li>
 <li class="fragment">Is model A better than model B
@@ -61,8 +70,8 @@
 </ul>
 
 </section>
-<section id="slide-orga6eb9b0">
-<h3 id="orga6eb9b0">Cross-validation</h3>
+<section id="slide-orgfc96620">
+<h3 id="orgfc96620">Cross-validation</h3>
 <ul>
 <li class="fragment">Perhaps the most intuitively understandable procedure for testing models</li>
 <li class="fragment">Procedure:
@@ -77,8 +86,8 @@
 </ul>
 
 </section>
-<section id="slide-org6778102">
-<h4 id="org6778102">Types of crossvalidation</h4>
+<section id="slide-orga39e3d0">
+<h4 id="orga39e3d0">Types of crossvalidation</h4>
 <ul>
 <li class="fragment">Leave-one-out crossvalidation
 <ul>
@@ -104,8 +113,8 @@
 </ul>
 
 </section>
-<section id="slide-orgeb74f37">
-<h4 id="orgeb74f37">Disadvantages to cross-validation</h4>
+<section id="slide-orgc5b36ae">
+<h4 id="orgc5b36ae">Disadvantages to cross-validation</h4>
 <ul>
 <li class="fragment"><i>Overfitting</i> can be a concern, especially when N (dataset size) is small and P (number of predictors) is large
 <ul>
@@ -131,8 +140,8 @@
 </ul>
 
 </section>
-<section id="slide-orgf86d670">
-<h3 id="orgf86d670">Likelihood ratio test</h3>
+<section id="slide-orgd839cb4">
+<h3 id="orgd839cb4">Likelihood ratio test</h3>
 <ul>
 <li class="fragment">Formally: a test of the hypothesis that certain parameter(s) of a model are fixed at certain values, rather than allowed to vary</li>
 <li class="fragment">In practice: a test of whether parameters are equal to zero</li>
@@ -141,8 +150,8 @@
 </ul>
 
 </section>
-<section id="slide-orgdcad3d9">
-<h3 id="orgdcad3d9">Information criteria</h3>
+<section id="slide-org2bbb0ae">
+<h3 id="org2bbb0ae">Information criteria</h3>
 <ul>
 <li class="fragment">Information criteria encompass a family of approaches which measure the goodness of fit of a model</li>
 <li class="fragment">The mathematical structure of the criteria in this family is very simple
@@ -156,8 +165,8 @@
 </ul>
 
 </section>
-<section id="slide-orgc21898f">
-<h4 id="orgc21898f">Using ICs</h4>
+<section id="slide-org3d3a93d">
+<h4 id="org3d3a93d">Using ICs</h4>
 <ul>
 <li class="fragment">Information criteria are inherently relative; you can only use them to compare two models, not to decide how “good” a single model is in isolation</li>
 <li class="fragment">Unlike LRT, ICs can be applied to non-nested models</li>
@@ -170,8 +179,8 @@
 </ul>
 
 </section>
-<section id="slide-orgcbfcd27">
-<h4 id="orgcbfcd27">Interpreting ICs</h4>
+<section id="slide-org65e8590">
+<h4 id="org65e8590">Interpreting ICs</h4>
 <ul>
 <li class="fragment">The model with a lower IC fits better</li>
 <li class="fragment">The difference between the two modelsʼ IC indicates how much better the fit is</li>
@@ -224,8 +233,8 @@ Unlike p-value based methods, there is no cutoff for IC differences, but rather 
 </ul>
 
 </section>
-<section id="slide-orgba3f026">
-<h4 id="orgba3f026">AIC</h4>
+<section id="slide-orgb3f2ef4">
+<h4 id="orgb3f2ef4">AIC</h4>
 <ul>
 <li class="fragment">Akaike Information Criterion</li>
 <li class="fragment">First of the family to be formulated</li>
@@ -237,8 +246,8 @@ Unlike p-value based methods, there is no cutoff for IC differences, but rather 
 </ul>
 
 </section>
-<section id="slide-org9477080">
-<h4 id="org9477080">BIC</h4>
+<section id="slide-org7e0c89c">
+<h4 id="org7e0c89c">BIC</h4>
 <ul>
 <li class="fragment">Bayesian information criterion</li>
 <li class="fragment">&Delta;BIC = asymptotically related to the Bayes factor between two models</li>
@@ -248,8 +257,8 @@ Unlike p-value based methods, there is no cutoff for IC differences, but rather 
 </ul>
 
 </section>
-<section id="slide-orgb62d07f">
-<h4 id="orgb62d07f">Information criteria and other methods</h4>
+<section id="slide-orgf9776c4">
+<h4 id="orgf9776c4">Information criteria and other methods</h4>
 <ul>
 <li class="fragment">AIC is asymptotically equivalent to leave-one-out crossvalidation</li>
 <li class="fragment">BIC is asymptotically equivalent to k-fold crossvalidation (where the value of k depends on N)</li>
@@ -264,8 +273,8 @@ Unlike p-value based methods, there is no cutoff for IC differences, but rather 
 </ul>
 
 </section>
-<section id="slide-org82988a3">
-<h4 id="org82988a3">Summing up</h4>
+<section id="slide-org5ae610c">
+<h4 id="org5ae610c">Summing up</h4>
 <ul>
 <li class="fragment">Likelihood ratio tests, ICs, and crossvalidation are all closely related</li>
 <li class="fragment">Each has advantages and disadvantages</li>
@@ -279,8 +288,8 @@ Unlike p-value based methods, there is no cutoff for IC differences, but rather 
 </ul>
 
 </section>
-<section id="slide-org1e1acf8">
-<h3 id="org1e1acf8">Shrinkage</h3>
+<section id="slide-org494c61a">
+<h3 id="org494c61a">Shrinkage</h3>
 <ul>
 <li class="fragment">Shrinkage models: a different perspective on variable selection/model comparison</li>
 <li class="fragment">Previous techniques have two steps
@@ -295,8 +304,8 @@ Unlike p-value based methods, there is no cutoff for IC differences, but rather 
 </ul>
 
 </section>
-<section id="slide-org5b1f009" data-background="lasso-ii.jpg">
-<h4 id="org5b1f009">Lasso</h4>
+<section id="slide-orgb7a037e" data-background="lasso-ii.jpg">
+<h4 id="orgb7a037e">Lasso</h4>
 <ul>
 <li class="fragment">LASSO penalizes non-zero regression coefficients</li>
 <li class="fragment">Can be used to decide between highly correlated variables</li>
@@ -307,8 +316,8 @@ Unlike p-value based methods, there is no cutoff for IC differences, but rather 
 <!-- Photo from https://investingcaffeine.com/tag/lasso/; original source unknown -->
 
 </section>
-<section id="slide-org8371ebd">
-<h4 id="org8371ebd">A LASSO example</h4>
+<section id="slide-org4920521">
+<h4 id="org4920521">A LASSO example</h4>
 <p>
 From my work on dating OE texts:
 </p>
@@ -397,8 +406,8 @@ From my work on dating OE texts:
 </table>
 
 </section>
-<section id="slide-orgd8ce611">
-<h4 id="orgd8ce611">Another LASSO example</h4>
+<section id="slide-org0cae608">
+<h4 id="org0cae608">Another LASSO example</h4>
 <ul>
 <li class="fragment">In the interactive app</li>
 <li class="fragment">Choosing between frequency measures in the lexical decision data</li>
@@ -408,8 +417,8 @@ From my work on dating OE texts:
 </section>
 </section>
 <section>
-<section id="slide-org77c69be">
-<h2 id="org77c69be">Applying these methods to mixed effects models</h2>
+<section id="slide-org33bd80a">
+<h2 id="org33bd80a">Applying these methods to mixed effects models</h2>
 <ul>
 <li class="fragment">When we move from simple models to mixed-effects, questions arise about how to apply these methods
 <ul>
@@ -423,8 +432,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orgc584445">
-<h3 id="orgc584445">Likelihood-based methods</h3>
+<section id="slide-org622aa48">
+<h3 id="org622aa48">Likelihood-based methods</h3>
 <ul>
 <li class="fragment">LRT, AIC, and BIC generally work for the selection of fixed effects in mixed models</li>
 <li class="fragment">These criteria do not work for selection of random effects
@@ -437,8 +446,16 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orge2d604c">
-<h3 id="orge2d604c">LASSO</h3>
+<section id="slide-org6eb4049">
+<h3 id="org6eb4049">Exercise</h3>
+<ul>
+<li class="fragment">“Single variable selecton” in the interactive app</li>
+
+</ul>
+
+</section>
+<section id="slide-orgc336af5">
+<h3 id="orgc336af5">LASSO</h3>
 <ul>
 <li class="fragment">A version of LASSO is available for mixed-effects models</li>
 <li class="fragment">However, itʼs very computationally intensive
@@ -457,8 +474,8 @@ From my work on dating OE texts:
 </section>
 </section>
 <section>
-<section id="slide-org67d9f2f">
-<h2 id="org67d9f2f">Selecting fixed effects structure</h2>
+<section id="slide-org46018ed">
+<h2 id="org46018ed">Selecting fixed effects structure</h2>
 
 <div class="figure">
 <p><img src="sci-method.jpg" alt="sci-method.jpg" height="500px" />
@@ -466,8 +483,8 @@ From my work on dating OE texts:
 </div>
 
 </section>
-<section id="slide-orgef6d6a9">
-<h3 id="orgef6d6a9">Methodological realism</h3>
+<section id="slide-orgc9b83df">
+<h3 id="orgc9b83df">Methodological realism</h3>
 <ul>
 <li class="fragment">Ideal case: testing a hypothesis operationalized by one variable
 <ul>
@@ -480,8 +497,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orgd8f7a44">
-<h3 id="orgd8f7a44">Model selection over multiple covariates</h3>
+<section id="slide-org4cd208e">
+<h3 id="org4cd208e">Model selection over multiple covariates</h3>
 <ul>
 <li class="fragment">Common scenario, especially in observational/corpus studies
 <ul>
@@ -493,8 +510,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orgc27cd89">
-<h3 id="orgc27cd89">Problems with multiple hypothesis testing</h3>
+<section id="slide-org93d436c">
+<h3 id="org93d436c">Problems with multiple hypothesis testing</h3>
 <ul>
 <li class="fragment">p-values are no longer accurate
 <ul>
@@ -506,8 +523,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orgfa2f0c2">
-<h3 id="orgfa2f0c2">Kinds of multiple hypothesis testing</h3>
+<section id="slide-orgd27b007">
+<h3 id="orgd27b007">Kinds of multiple hypothesis testing</h3>
 <ul>
 <li class="fragment">Stepwise selection
 <ul>
@@ -521,8 +538,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orgbab2c72">
-<h3 id="orgbab2c72">What to do instead</h3>
+<section id="slide-org970344e">
+<h3 id="org970344e">What to do instead</h3>
 <ul>
 <li class="fragment">Fit a full model, explicate the effects and their sizes</li>
 <li class="fragment">Use shrinkage model</li>
@@ -541,8 +558,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org836e896">
-<h3 id="org836e896">Data visualization</h3>
+<section id="slide-org3aa2cdc">
+<h3 id="org3aa2cdc">Data visualization</h3>
 <ul>
 <li class="fragment">Exploratory visualization is hugely important</li>
 <li class="fragment">Example: unpacking the effect of lexicality last week</li>
@@ -552,8 +569,8 @@ From my work on dating OE texts:
 </section>
 </section>
 <section>
-<section id="slide-org4900359">
-<h2 id="org4900359">Selecting random effects structure</h2>
+<section id="slide-orga095536">
+<h2 id="orga095536">Selecting random effects structure</h2>
 <ul>
 <li class="fragment">Most linguistic studies treat random effects as nuisance variables
 <ul>
@@ -571,8 +588,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org8a268cc">
-<h3 id="org8a268cc">How to do random effects?</h3>
+<section id="slide-org999ce6d">
+<h3 id="org999ce6d">How to do random effects?</h3>
 <ul>
 <li class="fragment">Two competing approaches to the selection of random effects structures have recently appeared in the literature
 <ul>
@@ -584,8 +601,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orgb0dddf1">
-<h3 id="orgb0dddf1">Computational note</h3>
+<section id="slide-org2b6fc71">
+<h3 id="org2b6fc71">Computational note</h3>
 <ul>
 <li class="fragment"><code>lme4</code> has two methods for fitting models
 <ul>
@@ -604,8 +621,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org67109ba">
-<h3 id="org67109ba">The Barr et al. recommendation</h3>
+<section id="slide-org67180aa">
+<h3 id="org67180aa">The Barr et al. recommendation</h3>
 <ul>
 <li class="fragment">From linear models to LMEM: acknowledge that subjects have different baseline responses</li>
 <li class="fragment">From random intercepts to random slopes: recognize that subjects have different responses to experimental manipulation</li>
@@ -618,8 +635,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org558e1ee">
-<h3 id="org558e1ee">What about by-item slopes</h3>
+<section id="slide-org703dd00">
+<h3 id="org703dd00">What about by-item slopes?</h3>
 <ul>
 <li class="fragment">In the examples Barr et al consider, the fixed effect predictors are all nested within items
 <ul>
@@ -641,17 +658,18 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org6099c81">
-<h3 id="org6099c81">In code</h3>
+<section id="slide-orgda6b972">
+<h3 id="orgda6b972">In code</h3>
 <ul>
 <li class="fragment">Linear model: <code>outcome ~ predictor1 + predictor2</code></li>
 <li class="fragment">Random intercepts: <code>outcome ~ predictor1 + predictor2 + (1 | person) + (1 | word)</code></li>
 <li class="fragment">Random slopes: <code>outcome ~ predictor1 + predictor2 + (1 + predictor1 | person) + (1 + predictor2 | word)</code></li>
 
 </ul>
+
 </section>
-<section id="slide-org9edd149">
-<h3 id="org9edd149">Problems with this recommendation</h3>
+<section id="slide-org567ddde">
+<h3 id="org567ddde">Problems with this recommendation</h3>
 <ul>
 <li class="fragment">But, this makes models explode computationally</li>
 <li class="fragment">Correlation between random effects
@@ -679,8 +697,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org4018765">
-<h3 id="org4018765">Bates et al. reply</h3>
+<section id="slide-orgb3d2270">
+<h3 id="orgb3d2270">Bates et al. reply</h3>
 <ul>
 <li class="fragment">Higher-order correlation terms make no discernable difference to the estimation of fixed effects
 <ul>
@@ -698,8 +716,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org0579b7c">
-<h3 id="org0579b7c">Principal components analysis of the random effects</h3>
+<section id="slide-orga33951b">
+<h3 id="orga33951b">Principal components analysis of the random effects</h3>
 <ul>
 <li class="fragment">PCA in general: a method to reduce the dimensionality of a dataset</li>
 <li class="fragment">Here: a test whether a model is overspecified for random effects</li>
@@ -708,8 +726,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orge19c797">
-<h3 id="orge19c797">Zero correlation parameter models</h3>
+<section id="slide-org392edb7">
+<h3 id="org392edb7">Zero correlation parameter models</h3>
 <ul>
 <li class="fragment">Bates et al. introduce a “zero correlation parameter” model</li>
 <li class="fragment">Sets the off-diagonal elements of the cor/cov matrix to zero
@@ -732,8 +750,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-orge2dd076">
-<h3 id="orge2dd076">Exercise</h3>
+<section id="slide-orgbe474fd">
+<h3 id="orgbe474fd">Exercise</h3>
 <ul>
 <li class="fragment">Notice, in the full model, the near-1 correlation between CELEX freq and summed bigram freq
 <ul>
@@ -751,8 +769,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org9a5d3fd">
-<h3 id="org9a5d3fd">So whatʼs the big deal?</h3>
+<section id="slide-orge29d304">
+<h3 id="orge29d304">So whatʼs the big deal?</h3>
 <ul>
 <li class="fragment">This dataset has very favorable characteristics</li>
 <li class="fragment">You donʼt have fitting problems
@@ -773,8 +791,8 @@ From my work on dating OE texts:
 </section>
 </section>
 <section>
-<section id="slide-org3aa1a54">
-<h2 id="org3aa1a54">Bayesian models</h2>
+<section id="slide-org52ec551">
+<h2 id="org52ec551">Bayesian models</h2>
 <ul>
 <li class="fragment">You may hear the word “Bayesian” used in connection with modeling</li>
 <li class="fragment">A framework for inference</li>
@@ -783,8 +801,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org6f554c3">
-<h3 id="org6f554c3">Why Bayesian</h3>
+<section id="slide-orgc658aab">
+<h3 id="orgc658aab">Why Bayesian</h3>
 <ul>
 <li class="fragment">Bayesian inference is a good fit with Monte Carlo simulation</li>
 <li class="fragment">Monte Carlo = math is hard, letʼs go to the casino</li>
@@ -793,8 +811,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org6c2e098">
-<h3 id="org6c2e098">Advantages of Bayesian</h3>
+<section id="slide-org9c8f01e">
+<h3 id="org9c8f01e">Advantages of Bayesian</h3>
 <ul>
 <li class="fragment">Bayesian methods are incredibly flexible</li>
 <li class="fragment">You can build your own model from building blocks</li>
@@ -810,8 +828,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org96ea0ef">
-<h3 id="org96ea0ef">Disadvantages of Bayesian methods</h3>
+<section id="slide-orgf222ec5">
+<h3 id="orgf222ec5">Disadvantages of Bayesian methods</h3>
 <ul>
 <li class="fragment">You gotta want it</li>
 <li class="fragment">Building models from scratch is difficult</li>
@@ -819,8 +837,8 @@ From my work on dating OE texts:
 </ul>
 
 </section>
-<section id="slide-org78dacfd">
-<h3 id="org78dacfd">A Bayesian example</h3>
+<section id="slide-org0197767">
+<h3 id="org0197767">A Bayesian example</h3>
 <pre class="example" style="font-size:50%">
 data {
   int&lt;lower=0&gt; N; // # of rats
@@ -850,8 +868,8 @@ model {
 </section>
 </section>
 <section>
-<section id="slide-org7ffd924">
-<h2 id="org7ffd924">Resources</h2>
+<section id="slide-org31d04b0">
+<h2 id="org31d04b0">Resources</h2>
 <ul>
 <li class="fragment">Books
 <ul>
