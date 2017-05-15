@@ -42,6 +42,8 @@
 - Last week: the motivation for mixed effects models
 - Today: how to compare models to each other
 
+** TODO Start the interactive app                                 :noexport:
+
 * Model comparison methods
 
 ** Motivation

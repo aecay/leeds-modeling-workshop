@@ -72,6 +72,19 @@ renderWithCode <- function (name, renderFn, code) {
                 result = renderFn(code)))
 }
 
+drop.ui <- tabPanel("Single variable selection",
+                    mainPanel(
+                        tags$h3("Simple linear model"),
+                        "Here are the AIC and LRT test statistics for a linear model containing our",
+                        "predictors from last week",
+                        verbatimTextOutput("lm.drop"),
+                        tags$h3("Mixed effects model"),
+                        "Here is the same table for a mixed-effects model",
+                        verbatimTextOutput("mlm.drop"),
+                        "And finally the direct comparison of these two models",
+                        verbatimTextOutput("anova.mlm")
+                    ))
+
 vif.ui <- tabPanel("Selecting among correlated variables",
                    mainPanel(
                        "It's fairly obvious that the frequency measurements in the data",
@@ -117,6 +130,7 @@ pca.ui <- tabPanel("Random effects fitting",
 
 ui <- fluidPage(titlePanel("Mixed effect workshop day 2 demos"),
                 navlistPanel("Case studies",
+                             drop.ui,
                              vif.ui,
                              glmmLasso.ui,
                              pca.ui))
@@ -191,6 +205,46 @@ server <- function(input, output, session) {
                         final = fixef(lm3))
     },
     digits = 7)
+
+    output$lm.drop <- renderPrint({
+        lm.drop <- lm(log(rt) ~
+                      scale(nletters) +
+                      scale(celex.frequency) +
+                      scale(summed.bigram) +
+                      scale(OLD20) +
+                      lexicality +
+                      part3 +
+                      lett.odd,
+                      data = dat)
+        drop1(lm.drop, test = "Chisq")
+    })
+
+    drop.mlm.model <- lmer(log(rt) ~
+                           scale(nletters) +
+                           scale(celex.frequency) +
+                           scale(summed.bigram) +
+                           scale(OLD20) +
+                           lexicality +
+                           part3 +
+                           lett.odd +
+                           (1 | participant) +
+                           (1 | spelling),
+                           data = dat)
+
+    output$mlm.drop <- renderPrint(drop1(drop.mlm.model, test = "Chisq"))
+
+    drop.mlm.model.reduced <- lmer(log(rt) ~
+                                   scale(nletters) +
+                                   scale(celex.frequency) +
+                                   scale(summed.bigram) +
+                                   scale(OLD20) +
+                                   lexicality +
+                                   lett.odd +
+                                   (1 | participant) +
+                                   (1 | spelling),
+                                   data = dat)
+
+    output$anova.mlm <- renderPrint(anova(drop.mlm.model, drop.mlm.model.reduced))
 }
 
 
