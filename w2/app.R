@@ -1,7 +1,9 @@
 if (!require("pacman")) {install.packages("pacman"); library(pacman)}
 pacman::p_load(car, corrplot, formatR, glmnet, glmmLasso, lme4, devtools)
 devtools::install_github("dmbates/RePsychLing")
+devtools::install_github("AnalytixWare/ShinySky")
 library(RePsychLing)
+library(shinysky)
 
 show.code <- function(x) {
     return (tags$pre("> ", textOutput(x)))
@@ -15,42 +17,40 @@ withCodeOutput <- function(name, outputFn) {
     ))
 }
 
-## TODO: uncomment
+glmmLasso.model <- glmmLasso(log(rt) ~
+                             scale(subtlex.frequency) +
+                             scale(celex.frequency) +
+                             scale(celex.frequency.lemma) +
+                             scale(bnc.frequency),
+                             rnd = list(participant = ~1, spelling = ~1),
+                             data = subset(dat, !is.na(rt)),
+                             lambda=175,    # Value determined by CV, according to
+                                        # glmmLasso soccer example
+                             switch.NR=FALSE,
+                             final.re=TRUE)
 
-## glmmLasso.model <- glmmLasso(log(rt) ~
-##                              scale(subtlex.frequency) +
-##                              scale(celex.frequency) +
-##                              scale(celex.frequency.lemma) +
-##                              scale(bnc.frequency),
-##                              rnd = list(participant = ~1, spelling = ~1),
-##                              data = subset(dat, !is.na(rt)),
-##                              lambda=175,    # Value determined by CV, according to
-##                                         # glmmLasso soccer example
-##                              switch.NR=FALSE,
-##                              final.re=TRUE)
+lmer.model <- lmer(log(rt) ~
+                   scale(subtlex.frequency) +
+                   scale(celex.frequency) +
+                   scale(celex.frequency.lemma) +
+                   scale(bnc.frequency) +
+                   (1|participant) + (1|spelling),
+                   data = dat)
 
-## lmer.model <- lmer(log(rt) ~
-##                    scale(subtlex.frequency) +
-##                    scale(celex.frequency) +
-##                    scale(celex.frequency.lemma) +
-##                    scale(bnc.frequency) +
-##                    (1|participant) + (1|spelling),
-##                    data = dat)
+lm1 <- lmer(log(rt) ~ scale(nletters) + scale(celex.frequency) + scale(summed.bigram) +
+            (1 + scale(nletters) + scale(celex.frequency) + scale(summed.bigram) | participant) +
+            (1 | spelling),
+            data = dat, REML = FALSE)
 
-## lm1 <- lmer(log(rt) ~ scale(nletters) + scale(celex.frequency) + scale(summed.bigram) +
-##             (1 + scale(nletters) + scale(celex.frequency) + scale(summed.bigram) | participant) +
-##             (1 | spelling),
-##             data = dat, REML = FALSE)
+lm2 <- lmer(log(rt) ~ scale(nletters) + scale(celex.frequency) + scale(summed.bigram) +
+            (1 + scale(nletters) + scale(celex.frequency) + scale(summed.bigram) || participant) +
+            (1 | spelling),
+            data = dat, REML = FALSE)
 
-## lm2 <- lmer(log(rt) ~ scale(nletters) + scale(celex.frequency) + scale(summed.bigram) +
-##             (1 + scale(nletters) + scale(celex.frequency) + scale(summed.bigram) || participant) +
-##             (1 | spelling),
-##             data = dat, REML = FALSE)
-
-## lm3 <- lmer(log(rt) ~ scale(nletters) + scale(celex.frequency) + scale(summed.bigram) +
-##             (1 + scale(nletters) + scale(celex.frequency) || participant) +
-##             (1 | spelling),
-##             data = dat, REML = FALSE)
+lm3 <- lmer(log(rt) ~ scale(nletters) + scale(celex.frequency) + scale(summed.bigram) +
+            (1 + scale(nletters) + scale(celex.frequency) || participant) +
+            (1 | spelling),
+            data = dat, REML = FALSE)
 
 # XXX: support withCode(renderPlot({code}))
 renderWithCode <- function (name, renderFn, code) {
@@ -128,7 +128,8 @@ pca.ui <- tabPanel("Random effects fitting",
                    tableOutput("lm.coefs"))
 
 
-ui <- fluidPage(titlePanel("Mixed effect workshop day 2 demos"),
+ui <- fluidPage(busyIndicator(),
+                titlePanel("Mixed effect workshop day 2 demos"),
                 navlistPanel("Case studies",
                              drop.ui,
                              vif.ui,
