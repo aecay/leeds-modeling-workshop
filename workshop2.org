@@ -1,10 +1,46 @@
-#+macro: red @@html:<span style='text-color:red'>@@$1@@html:</span>@@
-#+macro: blue @@html:<span style='text-color:blue'>@@$1@@html:</span>@@
-#+macro: green @@html:<span style='text-color:green'>@@$1@@html:</span>@@
+#+title: Model comparison and selection
+#+author: Aaron Ecay
+
+#+property: header-args:R :session *stats-wkshp* :eval never-export
+
+#+reveal_theme: black
+#+reveal_trans: default
+
+#+options: title:nil reveal_history:t num:nil toc:nil
+
+#+macro: red @@html:<span style='color:red'>@@$1@@html:</span>@@
+#+macro: blue @@html:<span style='color:blue'>@@$1@@html:</span>@@
+#+macro: green @@html:<span style='color:green'>@@$1@@html:</span>@@
+
+* prelim                                                           :noexport:
+#+begin_src emacs-lisp
+  (setq org-reveal-root "https://aecay.github.io/leeds-modeling-workshop/revealjs/"
+        ;org-reveal-hlevel 2
+        )
+
+  (defun awe-ox-reveal-fragment (element val)
+    (org-element-put-property element :attr_reveal `(":frag" ,val)))
+
+  (defun awe-ox-reveal-fragment-lists (tree _backend _info)
+    (org-element-map tree 'plain-list
+      (lambda (l)
+        (let* ((len (length (org-element-contents l)))
+               (s (concat "(" (apply #'concat (cl-loop for i from 1 to len collect "t ")) ")")))
+          (awe-ox-reveal-fragment l s))))
+    (org-reveal-filter-parse-tree tree _backend _info))
+
+  ;;; TODO: executes in the wrong order
+  (setq org-export-filter-parse-tree-functions
+        '(awe-ox-reveal-fragment-lists))
+
+  (setq-local org-reveal-title-slide
+              "<h1>%t</h1>")
+#+end_src
 
 * Introduction
 
-* Collinearity?
+- Last week: the motivation for mixed effects models
+- Today: how to compare models to each other
 
 * Model comparison methods
 
@@ -44,6 +80,9 @@
   - k-fold and LOO CV do not protect against overfitting
 - Thereʼs not a good general rule of thumb for interpreting the difference in predictive performance between two models
 - You probably have to program it yourself
+
+#+reveal: split
+
 - Conclusion: crossvalidation is almost never the right choice
   - That being said, it can be a last resort
   - Itʼs related to a couple of other things that weʼll discuss
@@ -53,10 +92,6 @@
 - Formally: a test of the hypothesis that certain parameter(s) of a model are fixed at certain values, rather than allowed to vary
 - In practice: a test of whether parameters are equal to zero
 - The LRT can only be validly applied to nested models: the predictors of one model are a proper subset of those in the other
-
-*** TODO to add                                                    :noexport:
-
-use of ML vs REML
 
 ** Information criteria
 
@@ -77,6 +112,9 @@ use of ML vs REML
 
 - The model with a lower IC fits better
 - The difference between the two modelsʼ IC indicates how much better the fit is
+
+#+reveal: split
+
 - Unlike p-value based methods, there is no cutoff for IC differences, but rather a rule of thumb
   | Difference | Interpretation                        |
   | 0–2        | No/only weak evidence of a difference |
@@ -156,18 +194,238 @@ From my work on dating OE texts:
 - In the interactive app
 - Choosing between frequency measures in the lexical decision data
 
-** ...fence? etc
-
-** Bayesian methods
-
 * Applying these methods to mixed effects models
 
-* Alternatives to model selection
+- When we move from simple models to mixed-effects, questions arise about how to apply these methods
+  - The method might apply without modification
+  - The method might need tweaks to work properly
+  - The method might not apply for theoretical reasons
+  - The method might not apply for computational reasons
 
-https://mchankins.wordpress.com/2013/04/21/still-not-significant-2/
+** Likelihood-based methods
 
-- model averaging
-- data visualization
+- LRT, AIC, and BIC generally work for the selection of fixed effects in mixed models
+- These criteria do not work for selection of random effects
+  - Any models compared via these methods should have the same random effects
+  - They should also be fit by ML (=REML = FALSE= in R)
+
+** LASSO
+
+- A version of LASSO is available for mixed-effects models
+- However, itʼs very computationally intensive
+  - (Why?  Setting \lambda{})
+- Look at the “Mixed Model LASSO” example
+  - What do you notice about the effect sizes and signs?
+
+* Selecting fixed effects structure
+
+#+attr_html: :height 500px
+[[file:sci-method.jpg]]
+
+** Methodological realism
+
+- Ideal case: testing a hypothesis operationalized by one variable
+  - Perfectly balanced experiment
+  - Covariates controlled
+- In real life, things are more complicated
+
+** Model selection over multiple covariates
+
+- Common scenario, especially in observational/corpus studies
+  - Collect data on everything, see what analyses will stick
+- Implies testing many models/hypotheses
+
+** Problems with multiple hypothesis testing
+
+- p-values are no longer accurate
+  - Bonferroni correction, early 1960s
+- Data dredging becomes a concern
+
+** Kinds of multiple hypothesis testing
+
+- Stepwise selection
+  - Forwards
+  - Backwards
+- Not a good idea
+- R^2, p-value, coefficient estimates all wrong
+
+** What to do instead
+
+- Fit a full model, explicate the effects and their sizes
+- Use shrinkage model
+- Model averaging
+  - Bayesian or AIC-based
+  - Appropriate when there are multiple competing explanations
+- Do you accept what p-values mean?
+  - https://mchankins.wordpress.com/2013/04/21/still-not-significant-2/
+
+** Data visualization
+
+- Exploratory visualization is hugely important
+- Example: unpacking the effect of lexicality last week
+
+* Selecting random effects structure
+
+- Most linguistic studies treat random effects as nuisance variables
+  - Control for features of the data, but are not interesting
+  - Contrasts with the position in other disciplines
+- So why should we select on them at all?
+  - Correctness
+  - Fitting problems
+
+** How to do random effects?
+
+- Two competing approaches to the selection of random effects structures have recently appeared in the literature
+  - “Keep it maximal” ([[http://talklab.psy.gla.ac.uk/KeepItMaximalR2.pdf][Barr et al. 2013]])
+  - Donʼt ([[https://arxiv.org/pdf/1506.04967.pdf][Bates et al. 2015]])
+
+** Computational note
+
+- =lme4= has two methods for fitting models
+  - REML: fit the random effects first, then fit the fixed effects
+  - ML: fit both at the same time
+- REML is usually better if all you care about is a single model
+  - Therefore, itʼs the default
+- When youʼre manipulating random effects, though, it does the wrong thing
+- For these purposes, we always have to pass =REML = FALSE= to the =lmer= function
+
+** The Barr et al. recommendation
+
+- From linear models to LMEM: acknowledge that subjects have different baseline responses
+- From random intercepts to random slopes: recognize that subjects have different responses to experimental manipulation
+- We should always fit random by-subject slopes for each experimental variable of interest
+  - Justfication: analogy with ANOVA, simulation
+
+** What about by-item slopes
+
+- In the examples Barr et al consider, the fixed effect predictors are all nested within items
+  - Word class, length, etc.
+- So, no need to fit by-item slopes
+  - In fact, itʼs impossible
+- Depending on the study predictors might be nested in participants
+  - Gender, age, ...
+- Does it make sense to fit these within items?
+
+** In code
+
+- Linear model: =outcome ~ predictor1 + predictor2=
+- Random intercepts: =outcome ~ predictor1 + predictor2 + (1 | person) + (1 | word)=
+- Random slopes: =outcome ~ predictor1 + predictor2 + (1 + predictor1 | person) + (1 + predictor2 | word)=
+** Problems with this recommendation
+
+- But, this makes models explode computationally
+- Correlation between random effects
+  - Example: quick/careless readers
+- The number of correlation parameters increases proportionally to the square of the number of predictors
+  - (Specifically: $N(N-1)/2$)
+
+    \[\begin{bmatrix}
+    var_{0,0} & \cdots \\
+    cor_{0,1} & var_{1,1} & \cdots \\
+    cor_{0,2} & cor_{1,2} & var_{2,2} & \cdots
+    \end{bmatrix}
+    \]
+
+** Bates et al. reply
+
+- Higher-order correlation terms make no discernable difference to the estimation of fixed effects
+  - In several case studies from the literature
+- Models that include full variance-covariance structures donʼt fit properly
+  - Can fail to converge
+  - Can have rank-deficient var/cov matrices even while converging
+- (The Barr et al. simulations arenʼt realistic)
+
+** Principal components analysis of the random effects
+
+- PCA in general: a method to reduce the dimensionality of a dataset
+- Here: a test whether a model is overspecified for random effects
+- Any “standard deviations” of (close to) zero are bad
+
+** Zero correlation parameter models
+
+- Bates et al. introduce a “zero correlation parameter” model
+- Sets the off-diagonal elements of the cor/cov matrix to zero
+  - Doesnʼt capture the “fast and sloppy reader” case
+- But, it reduces the number of parameters that need to be fitted
+  - O(N^2) \to O(N)
+- Convenient syntax in =lme4= for this
+  - =(1 + predictor1 + predictor2 || subject)=
+  - Equivalent to =(1 | subject) + (0 + predictor1 | subject) + (0 + predictor2 | subject)=
+
+** Exercise
+
+- Notice, in the full model, the near-1 correlation between CELEX freq and summed bigram freq
+  - Indicates poor fit; parameter is close to the boundary
+- Notice, in the ZCP model, that the variance estimate for =summed.bigram= is effectively zero
+- Notice that these problems go away in the final model we fit
+  - Though we might look with suspicion on the random intercept for =celex.frequency=
+- Notice that throughout, the fixed effects estimates have not changed
+
+** So whatʼs the big deal?
+
+- This dataset has very favorable characteristics
+- You donʼt have fitting problems
+  - ...until you do
+- The truth is probably somewhere in the middle
+  - Intercept-only models are too sparse
+  - Full models can be overspecified
+- (The section on nonlinear effects is more important)
+
+* Bayesian models
+
+- You may hear the word “Bayesian” used in connection with modeling
+- A framework for inference
+- A particular simulation-based fitting procedure
+
+** Why Bayesian
+
+- Bayesian inference is a good fit with Monte Carlo simulation
+- Monte Carlo = math is hard, letʼs go to the casino
+- The popularity of Bayesian inference is at least in part due to how well Monte Carlo methods work
+
+** Advantages of Bayesian
+
+- Bayesian methods are incredibly flexible
+- You can build your own model from building blocks
+- Everything is a probability distribution
+  - Hypothesis testing
+  - Model comparison
+  - All reduce down to statements about a distribution
+- Better convergence (under some conditions)
+
+** Disadvantages of Bayesian methods
+
+- You gotta want it
+- Building models from scratch is difficult
+
+** A Bayesian example
+
+#+attr_html: :style font-size:50%
+#+begin_example
+data {
+  int<lower=0> N; // # of rats
+  int<lower=0> T; // # of observations
+  real x[T];      // Days elapsed
+  real y[N,T];    // Weights
+}
+parameters {
+  real alpha[N];  // Intercept
+  real beta[N];   // Slope
+
+  real mu_alpha;
+  // ...
+}
+model {
+  mu_alpha ~ normal(0, 100);
+  // ...
+  alpha ~ normal(mu_alpha, sigma_alpha);
+  beta ~ normal(mu_beta, sigma_beta);
+  for (n in 1:N)
+    for (t in 1:T)
+      y[n,t] ~ normal(alpha[n] + beta[n] * x[t], sigma_y);
+
+}
+#+end_example
 
 * Resources
 
@@ -175,8 +433,15 @@ https://mchankins.wordpress.com/2013/04/21/still-not-significant-2/
   - Bates 2010, “lme4: Mixed effects modeling with R” ([[http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf][link]])
   - Gelman and Hill (2006) “Data Analysis Using Regression and Multilevel/Hierarchical Models” ([[https://www.amazon.co.uk/Analysis-Regression-Multilevel-Hierarchical-Analytical/dp/052168689X/][amazon]])
   - Kruschke (2010/2014) “Doing Bayesian data analysis” ([[https://www.amazon.co.uk/Doing-Bayesian-Data-Analysis-Second/dp/B013F5JN72/][amazon]])
+
+#+reveal: split
+
 - Articles
-  - Kyle and Danʼs article
+  - Baayen et al 2007 “[[http://www.sfs.uni-tuebingen.de/~hbaayen/publications/baayenDavidsonBates.pdf][Mixed-effects modeling with crossed random effects for subjects and items]]”
+  - Gorman 2009 “[[http://repository.upenn.edu/ircs_reports/202/][Hierarchical regression modeling for language research]]”
+
+#+reveal: split
+
 - Web resources
   - R-focused mailing lists: [[https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models][R-sig-ME]] and [[https://mailman.ucsd.edu/mailman/listinfo/ling-r-lang-l][R-lang]]
   - [[https://stats.stackexchange.com/][Crossvalidated]]
