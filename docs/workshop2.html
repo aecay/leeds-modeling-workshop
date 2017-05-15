@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Model comparison and selection</title>
+<meta name="author" content="(Aaron Ecay)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="https://aecay.github.io/leeds-modeling-workshop/revealjs/css/reveal.css"/>
+
+<link rel="stylesheet" href="https://aecay.github.io/leeds-modeling-workshop/revealjs/css/theme/black.css" id="theme"/>
+
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'https://aecay.github.io/leeds-modeling-workshop/revealjs/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1>Model comparison and selection</h1>
+</section>
+
+<section>
+<section id="slide-orgc700758">
+<h2 id="orgc700758">Introduction</h2>
+<ul>
+<li class="fragment">Last week: the motivation for mixed effects models</li>
+<li class="fragment">Today: how to compare models to each other</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgeacf48e">
+<h2 id="orgeacf48e">Model comparison methods</h2>
+<div class="outline-text-2" id="text-orgeacf48e">
+</div>
+</section>
+<section id="slide-org61d8e91">
+<h3 id="org61d8e91">Motivation</h3>
+<ul>
+<li class="fragment">We want to be able to compare models to each other</li>
+<li class="fragment">Is model A better than model B
+<ul>
+<li class="fragment">If model A = model B + one predictor, make inferences about that additional predictor</li>
+
+</ul></li>
+<li class="fragment">As we saw last time, R<sup>2</sup> and p-values are not really good ways of doing this</li>
+
+</ul>
+
+</section>
+<section id="slide-orga6eb9b0">
+<h3 id="orga6eb9b0">Cross-validation</h3>
+<ul>
+<li class="fragment">Perhaps the most intuitively understandable procedure for testing models</li>
+<li class="fragment">Procedure:
+<ul>
+<li class="fragment">Split the data in two</li>
+<li class="fragment">Fit the model on one portion of the data (training)</li>
+<li class="fragment">Evaluate how well it fits the other portion (testing)</li>
+
+</ul></li>
+<li class="fragment">Lots of room for variation in how CV is performed</li>
+
+</ul>
+
+</section>
+<section id="slide-org6778102">
+<h4 id="org6778102">Types of crossvalidation</h4>
+<ul>
+<li class="fragment">Leave-one-out crossvalidation
+<ul>
+<li class="fragment">Training = N-1 datapoints; testing = 1</li>
+<li class="fragment">Repeat N times for each datapoint</li>
+
+</ul></li>
+<li class="fragment">k-fold CV
+<ul>
+<li class="fragment">A typical value for k is 10</li>
+<li class="fragment">Training = N(k-1)/k; testing = N/k</li>
+<li class="fragment">Repeat k times</li>
+
+</ul></li>
+<li class="fragment">Holdout CV
+<ul>
+<li class="fragment">A typical value for p is 0.8</li>
+<li class="fragment">Training = pN; testing = (1-p)N</li>
+<li class="fragment">Not repeated</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgeb74f37">
+<h4 id="orgeb74f37">Disadvantages to cross-validation</h4>
+<ul>
+<li class="fragment"><i>Overfitting</i> can be a concern, especially when N (dataset size) is small and P (number of predictors) is large
+<ul>
+<li class="fragment">k-fold and LOO CV do not protect against overfitting</li>
+
+</ul></li>
+<li class="fragment">Thereʼs not a good general rule of thumb for interpreting the difference in predictive performance between two models</li>
+<li class="fragment">You probably have to program it yourself</li>
+
+</ul>
+
+</section>
+<section >
+
+<ul>
+<li class="fragment">Conclusion: crossvalidation is almost never the right choice
+<ul>
+<li class="fragment">That being said, it can be a last resort</li>
+<li class="fragment">Itʼs related to a couple of other things that weʼll discuss</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgf86d670">
+<h3 id="orgf86d670">Likelihood ratio test</h3>
+<ul>
+<li class="fragment">Formally: a test of the hypothesis that certain parameter(s) of a model are fixed at certain values, rather than allowed to vary</li>
+<li class="fragment">In practice: a test of whether parameters are equal to zero</li>
+<li class="fragment">The LRT can only be validly applied to nested models: the predictors of one model are a proper subset of those in the other</li>
+
+</ul>
+
+</section>
+<section id="slide-orgdcad3d9">
+<h3 id="orgdcad3d9">Information criteria</h3>
+<ul>
+<li class="fragment">Information criteria encompass a family of approaches which measure the goodness of fit of a model</li>
+<li class="fragment">The mathematical structure of the criteria in this family is very simple
+<ul>
+<li class="fragment">A measure of goodness of fit, the <i>likelihood</i> of the data under the model</li>
+<li class="fragment">A measure of the modelʼs complexity</li>
+
+</ul></li>
+<li class="fragment">Higher goodness of fit is better; as is lower complexity</li>
+
+</ul>
+
+</section>
+<section id="slide-orgc21898f">
+<h4 id="orgc21898f">Using ICs</h4>
+<ul>
+<li class="fragment">Information criteria are inherently relative; you can only use them to compare two models, not to decide how “good” a single model is in isolation</li>
+<li class="fragment">Unlike LRT, ICs can be applied to non-nested models</li>
+<li class="fragment">But they must be applied to models fit on the same data
+<ul>
+<li class="fragment">Watch out for NAs in R</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgcbfcd27">
+<h4 id="orgcbfcd27">Interpreting ICs</h4>
+<ul>
+<li class="fragment">The model with a lower IC fits better</li>
+<li class="fragment">The difference between the two modelsʼ IC indicates how much better the fit is</li>
+
+</ul>
+
+</section>
+<section >
+
+<ul>
+<li class="fragment"><p>
+Unlike p-value based methods, there is no cutoff for IC differences, but rather a rule of thumb
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Difference</td>
+<td class="org-left">Interpretation</td>
+</tr>
+
+<tr>
+<td class="org-left">0–2</td>
+<td class="org-left">No/only weak evidence of a difference</td>
+</tr>
+
+<tr>
+<td class="org-left">2–6</td>
+<td class="org-left">Some evidence of a difference</td>
+</tr>
+
+<tr>
+<td class="org-left">6–10</td>
+<td class="org-left">Strong evidence</td>
+</tr>
+
+<tr>
+<td class="org-left">10+</td>
+<td class="org-left">Very strong evidence</td>
+</tr>
+</tbody>
+</table></li>
+
+</ul>
+
+</section>
+<section id="slide-orgba3f026">
+<h4 id="orgba3f026">AIC</h4>
+<ul>
+<li class="fragment">Akaike Information Criterion</li>
+<li class="fragment">First of the family to be formulated</li>
+<li class="fragment">&Delta;AIC = asymptotic measure of how much more information about the data-generating process one model captures over another</li>
+<li class="fragment">Does not assume that the true model is in the set of candidates</li>
+<li class="fragment">More open to additional predictors than the BIC</li>
+<li class="fragment">Requires small-sample correction (<code>AICcmodavg</code> R package)</li>
+
+</ul>
+
+</section>
+<section id="slide-org9477080">
+<h4 id="org9477080">BIC</h4>
+<ul>
+<li class="fragment">Bayesian information criterion</li>
+<li class="fragment">&Delta;BIC = asymptotically related to the Bayes factor between two models</li>
+<li class="fragment">Assumes that the true model is in the candidate set</li>
+<li class="fragment">Imposes a harsher penalty on new predictors than the AIC does</li>
+
+</ul>
+
+</section>
+<section id="slide-orgb62d07f">
+<h4 id="orgb62d07f">Information criteria and other methods</h4>
+<ul>
+<li class="fragment">AIC is asymptotically equivalent to leave-one-out crossvalidation</li>
+<li class="fragment">BIC is asymptotically equivalent to k-fold crossvalidation (where the value of k depends on N)</li>
+<li class="fragment">In the case of nested models with one parameter of difference, the AIC and BIC are equivalent to LRTs
+<ul>
+<li class="fragment">&alpha; = 0.16 (AIC)</li>
+<li class="fragment">&alpha; dependent on the sample size (BIC)</li>
+<li class="fragment">N = 100, &alpha; = 0.032</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org82988a3">
+<h4 id="org82988a3">Summing up</h4>
+<ul>
+<li class="fragment">Likelihood ratio tests, ICs, and crossvalidation are all closely related</li>
+<li class="fragment">Each has advantages and disadvantages</li>
+<li class="fragment">All are easy to perform in R, and there is no reason not to perform and report all of them
+<ul>
+<li class="fragment">Except CV</li>
+
+</ul></li>
+<li class="fragment">Because they are so similar, the results are unlikely to be different in practice</li>
+
+</ul>
+
+</section>
+<section id="slide-org1e1acf8">
+<h3 id="org1e1acf8">Shrinkage</h3>
+<ul>
+<li class="fragment">Shrinkage models: a different perspective on variable selection/model comparison</li>
+<li class="fragment">Previous techniques have two steps
+<ul>
+<li class="fragment">Fit models</li>
+<li class="fragment">Compare them for GoF/complexity</li>
+
+</ul></li>
+<li class="fragment">In shrinkage methods, there is only one step</li>
+<li class="fragment">The complexity penalty is part of the model fitting</li>
+
+</ul>
+
+</section>
+<section id="slide-org5b1f009" data-background="lasso-ii.jpg">
+<h4 id="org5b1f009">Lasso</h4>
+<ul>
+<li class="fragment">LASSO penalizes non-zero regression coefficients</li>
+<li class="fragment">Can be used to decide between highly correlated variables</li>
+<li class="fragment">Can also be used as a general model fitting technique</li>
+
+</ul>
+
+<!-- Photo from https://investingcaffeine.com/tag/lasso/; original source unknown -->
+
+</section>
+<section id="slide-org8371ebd">
+<h4 id="org8371ebd">A LASSO example</h4>
+<p>
+From my work on dating OE texts:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Name</th>
+<th scope="col" class="org-right">Value</th>
+<th scope="col" class="org-left">Name</th>
+<th scope="col" class="org-right">Value</th>
+<th scope="col" class="org-left">Name</th>
+<th scope="col" class="org-right">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><span style='color:red'>DiagMC</span></td>
+<td class="org-right">0.11</td>
+<td class="org-left">VtoC</td>
+<td class="org-right">0.12</td>
+<td class="org-left"><span style='color:green'>TopPPSpro</span></td>
+<td class="org-right">0.09</td>
+</tr>
+
+<tr>
+<td class="org-left"><span style='color:red'>DiagCC</span></td>
+<td class="org-right">0</td>
+<td class="org-left">SCan</td>
+<td class="org-right">0</td>
+<td class="org-left"><span style='color:green'>TopObjSpro</span></td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left"><span style='color:red'>DiagSC</span></td>
+<td class="org-right">0</td>
+<td class="org-left">ScrSC</td>
+<td class="org-right">0</td>
+<td class="org-left"><span style='color:green'>TopPPSbj</span></td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left"><span style='color:red'>AuxVRoot</span></td>
+<td class="org-right">0</td>
+<td class="org-left"><span style='color:blue'>NGenSbj</span></td>
+<td class="org-right">0</td>
+<td class="org-left"><span style='color:green'>TopObjSbj</span></td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left"><span style='color:red'>AuxVSC</span></td>
+<td class="org-right">0</td>
+<td class="org-left"><span style='color:blue'>NGenObj</span></td>
+<td class="org-right">0.41</td>
+<td class="org-left">NegCon</td>
+<td class="org-right">0</td>
+</tr>
+
+<tr>
+<td class="org-left">DiagVP</td>
+<td class="org-right">0</td>
+<td class="org-left">Rel</td>
+<td class="org-right">0.16</td>
+<td class="org-left">Expl</td>
+<td class="org-right">0</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-orgd8ce611">
+<h4 id="orgd8ce611">Another LASSO example</h4>
+<ul>
+<li class="fragment">In the interactive app</li>
+<li class="fragment">Choosing between frequency measures in the lexical decision data</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org77c69be">
+<h2 id="org77c69be">Applying these methods to mixed effects models</h2>
+<ul>
+<li class="fragment">When we move from simple models to mixed-effects, questions arise about how to apply these methods
+<ul>
+<li class="fragment">The method might apply without modification</li>
+<li class="fragment">The method might need tweaks to work properly</li>
+<li class="fragment">The method might not apply for theoretical reasons</li>
+<li class="fragment">The method might not apply for computational reasons</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgc584445">
+<h3 id="orgc584445">Likelihood-based methods</h3>
+<ul>
+<li class="fragment">LRT, AIC, and BIC generally work for the selection of fixed effects in mixed models</li>
+<li class="fragment">These criteria do not work for selection of random effects
+<ul>
+<li class="fragment">Any models compared via these methods should have the same random effects</li>
+<li class="fragment">They should also be fit by ML (<code>REML = FALSE</code> in R)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orge2d604c">
+<h3 id="orge2d604c">LASSO</h3>
+<ul>
+<li class="fragment">A version of LASSO is available for mixed-effects models</li>
+<li class="fragment">However, itʼs very computationally intensive
+<ul>
+<li class="fragment">(Why?  Setting &lambda;)</li>
+
+</ul></li>
+<li class="fragment">Look at the “Mixed Model LASSO” example
+<ul>
+<li class="fragment">What do you notice about the effect sizes and signs?</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org67d9f2f">
+<h2 id="org67d9f2f">Selecting fixed effects structure</h2>
+
+<div class="figure">
+<p><img src="sci-method.jpg" alt="sci-method.jpg" height="500px" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgef6d6a9">
+<h3 id="orgef6d6a9">Methodological realism</h3>
+<ul>
+<li class="fragment">Ideal case: testing a hypothesis operationalized by one variable
+<ul>
+<li class="fragment">Perfectly balanced experiment</li>
+<li class="fragment">Covariates controlled</li>
+
+</ul></li>
+<li class="fragment">In real life, things are more complicated</li>
+
+</ul>
+
+</section>
+<section id="slide-orgd8f7a44">
+<h3 id="orgd8f7a44">Model selection over multiple covariates</h3>
+<ul>
+<li class="fragment">Common scenario, especially in observational/corpus studies
+<ul>
+<li class="fragment">Collect data on everything, see what analyses will stick</li>
+
+</ul></li>
+<li class="fragment">Implies testing many models/hypotheses</li>
+
+</ul>
+
+</section>
+<section id="slide-orgc27cd89">
+<h3 id="orgc27cd89">Problems with multiple hypothesis testing</h3>
+<ul>
+<li class="fragment">p-values are no longer accurate
+<ul>
+<li class="fragment">Bonferroni correction, early 1960s</li>
+
+</ul></li>
+<li class="fragment">Data dredging becomes a concern</li>
+
+</ul>
+
+</section>
+<section id="slide-orgfa2f0c2">
+<h3 id="orgfa2f0c2">Kinds of multiple hypothesis testing</h3>
+<ul>
+<li class="fragment">Stepwise selection
+<ul>
+<li class="fragment">Forwards</li>
+<li class="fragment">Backwards</li>
+
+</ul></li>
+<li class="fragment">Not a good idea</li>
+<li class="fragment">R<sup>2</sup>, p-value, coefficient estimates all wrong</li>
+
+</ul>
+
+</section>
+<section id="slide-orgbab2c72">
+<h3 id="orgbab2c72">What to do instead</h3>
+<ul>
+<li class="fragment">Fit a full model, explicate the effects and their sizes</li>
+<li class="fragment">Use shrinkage model</li>
+<li class="fragment">Model averaging
+<ul>
+<li class="fragment">Bayesian or AIC-based</li>
+<li class="fragment">Appropriate when there are multiple competing explanations</li>
+
+</ul></li>
+<li class="fragment">Do you accept what p-values mean?
+<ul>
+<li class="fragment"><a href="https://mchankins.wordpress.com/2013/04/21/still-not-significant-2/">https://mchankins.wordpress.com/2013/04/21/still-not-significant-2/</a></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org836e896">
+<h3 id="org836e896">Data visualization</h3>
+<ul>
+<li class="fragment">Exploratory visualization is hugely important</li>
+<li class="fragment">Example: unpacking the effect of lexicality last week</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org4900359">
+<h2 id="org4900359">Selecting random effects structure</h2>
+<ul>
+<li class="fragment">Most linguistic studies treat random effects as nuisance variables
+<ul>
+<li class="fragment">Control for features of the data, but are not interesting</li>
+<li class="fragment">Contrasts with the position in other disciplines</li>
+
+</ul></li>
+<li class="fragment">So why should we select on them at all?
+<ul>
+<li class="fragment">Correctness</li>
+<li class="fragment">Fitting problems</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org8a268cc">
+<h3 id="org8a268cc">How to do random effects?</h3>
+<ul>
+<li class="fragment">Two competing approaches to the selection of random effects structures have recently appeared in the literature
+<ul>
+<li class="fragment">“Keep it maximal” (<a href="http://talklab.psy.gla.ac.uk/KeepItMaximalR2.pdf">Barr et al. 2013</a>)</li>
+<li class="fragment">Donʼt (<a href="https://arxiv.org/pdf/1506.04967.pdf">Bates et al. 2015</a>)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgb0dddf1">
+<h3 id="orgb0dddf1">Computational note</h3>
+<ul>
+<li class="fragment"><code>lme4</code> has two methods for fitting models
+<ul>
+<li class="fragment">REML: fit the random effects first, then fit the fixed effects</li>
+<li class="fragment">ML: fit both at the same time</li>
+
+</ul></li>
+<li class="fragment">REML is usually better if all you care about is a single model
+<ul>
+<li class="fragment">Therefore, itʼs the default</li>
+
+</ul></li>
+<li class="fragment">When youʼre manipulating random effects, though, it does the wrong thing</li>
+<li class="fragment">For these purposes, we always have to pass <code>REML = FALSE</code> to the <code>lmer</code> function</li>
+
+</ul>
+
+</section>
+<section id="slide-org67109ba">
+<h3 id="org67109ba">The Barr et al. recommendation</h3>
+<ul>
+<li class="fragment">From linear models to LMEM: acknowledge that subjects have different baseline responses</li>
+<li class="fragment">From random intercepts to random slopes: recognize that subjects have different responses to experimental manipulation</li>
+<li class="fragment">We should always fit random by-subject slopes for each experimental variable of interest
+<ul>
+<li class="fragment">Justfication: analogy with ANOVA, simulation</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org558e1ee">
+<h3 id="org558e1ee">What about by-item slopes</h3>
+<ul>
+<li class="fragment">In the examples Barr et al consider, the fixed effect predictors are all nested within items
+<ul>
+<li class="fragment">Word class, length, etc.</li>
+
+</ul></li>
+<li class="fragment">So, no need to fit by-item slopes
+<ul>
+<li class="fragment">In fact, itʼs impossible</li>
+
+</ul></li>
+<li class="fragment">Depending on the study predictors might be nested in participants
+<ul>
+<li class="fragment">Gender, age, &#x2026;</li>
+
+</ul></li>
+<li class="fragment">Does it make sense to fit these within items?</li>
+
+</ul>
+
+</section>
+<section id="slide-org6099c81">
+<h3 id="org6099c81">In code</h3>
+<ul>
+<li class="fragment">Linear model: <code>outcome ~ predictor1 + predictor2</code></li>
+<li class="fragment">Random intercepts: <code>outcome ~ predictor1 + predictor2 + (1 | person) + (1 | word)</code></li>
+<li class="fragment">Random slopes: <code>outcome ~ predictor1 + predictor2 + (1 + predictor1 | person) + (1 + predictor2 | word)</code></li>
+
+</ul>
+</section>
+<section id="slide-org9edd149">
+<h3 id="org9edd149">Problems with this recommendation</h3>
+<ul>
+<li class="fragment">But, this makes models explode computationally</li>
+<li class="fragment">Correlation between random effects
+<ul>
+<li class="fragment">Example: quick/careless readers</li>
+
+</ul></li>
+<li class="fragment">The number of correlation parameters increases proportionally to the square of the number of predictors
+<ul>
+<li class="fragment"><p>
+(Specifically: \(N(N-1)/2\))
+</p>
+
+<p>
+\[\begin{bmatrix}
+    var_{0,0} & \cdots \\
+    cor_{0,1} & var_{1,1} & \cdots \\
+    cor_{0,2} & cor_{1,2} & var_{2,2} & \cdots
+    \end{bmatrix}
+    \]
+</p></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org4018765">
+<h3 id="org4018765">Bates et al. reply</h3>
+<ul>
+<li class="fragment">Higher-order correlation terms make no discernable difference to the estimation of fixed effects
+<ul>
+<li class="fragment">In several case studies from the literature</li>
+
+</ul></li>
+<li class="fragment">Models that include full variance-covariance structures donʼt fit properly
+<ul>
+<li class="fragment">Can fail to converge</li>
+<li class="fragment">Can have rank-deficient var/cov matrices even while converging</li>
+
+</ul></li>
+<li class="fragment">(The Barr et al. simulations arenʼt realistic)</li>
+
+</ul>
+
+</section>
+<section id="slide-org0579b7c">
+<h3 id="org0579b7c">Principal components analysis of the random effects</h3>
+<ul>
+<li class="fragment">PCA in general: a method to reduce the dimensionality of a dataset</li>
+<li class="fragment">Here: a test whether a model is overspecified for random effects</li>
+<li class="fragment">Any “standard deviations” of (close to) zero are bad</li>
+
+</ul>
+
+</section>
+<section id="slide-orge19c797">
+<h3 id="orge19c797">Zero correlation parameter models</h3>
+<ul>
+<li class="fragment">Bates et al. introduce a “zero correlation parameter” model</li>
+<li class="fragment">Sets the off-diagonal elements of the cor/cov matrix to zero
+<ul>
+<li class="fragment">Doesnʼt capture the “fast and sloppy reader” case</li>
+
+</ul></li>
+<li class="fragment">But, it reduces the number of parameters that need to be fitted
+<ul>
+<li class="fragment">O(N<sup>2</sup>) &rarr; O(N)</li>
+
+</ul></li>
+<li class="fragment">Convenient syntax in <code>lme4</code> for this
+<ul>
+<li class="fragment"><code>(1 + predictor1 + predictor2 || subject)</code></li>
+<li class="fragment">Equivalent to <code>(1 | subject) + (0 + predictor1 | subject) + (0 + predictor2 | subject)</code></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orge2dd076">
+<h3 id="orge2dd076">Exercise</h3>
+<ul>
+<li class="fragment">Notice, in the full model, the near-1 correlation between CELEX freq and summed bigram freq
+<ul>
+<li class="fragment">Indicates poor fit; parameter is close to the boundary</li>
+
+</ul></li>
+<li class="fragment">Notice, in the ZCP model, that the variance estimate for <code>summed.bigram</code> is effectively zero</li>
+<li class="fragment">Notice that these problems go away in the final model we fit
+<ul>
+<li class="fragment">Though we might look with suspicion on the random intercept for <code>celex.frequency</code></li>
+
+</ul></li>
+<li class="fragment">Notice that throughout, the fixed effects estimates have not changed</li>
+
+</ul>
+
+</section>
+<section id="slide-org9a5d3fd">
+<h3 id="org9a5d3fd">So whatʼs the big deal?</h3>
+<ul>
+<li class="fragment">This dataset has very favorable characteristics</li>
+<li class="fragment">You donʼt have fitting problems
+<ul>
+<li class="fragment">&#x2026;until you do</li>
+
+</ul></li>
+<li class="fragment">The truth is probably somewhere in the middle
+<ul>
+<li class="fragment">Intercept-only models are too sparse</li>
+<li class="fragment">Full models can be overspecified</li>
+
+</ul></li>
+<li class="fragment">(The section on nonlinear effects is more important)</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org3aa1a54">
+<h2 id="org3aa1a54">Bayesian models</h2>
+<ul>
+<li class="fragment">You may hear the word “Bayesian” used in connection with modeling</li>
+<li class="fragment">A framework for inference</li>
+<li class="fragment">A particular simulation-based fitting procedure</li>
+
+</ul>
+
+</section>
+<section id="slide-org6f554c3">
+<h3 id="org6f554c3">Why Bayesian</h3>
+<ul>
+<li class="fragment">Bayesian inference is a good fit with Monte Carlo simulation</li>
+<li class="fragment">Monte Carlo = math is hard, letʼs go to the casino</li>
+<li class="fragment">The popularity of Bayesian inference is at least in part due to how well Monte Carlo methods work</li>
+
+</ul>
+
+</section>
+<section id="slide-org6c2e098">
+<h3 id="org6c2e098">Advantages of Bayesian</h3>
+<ul>
+<li class="fragment">Bayesian methods are incredibly flexible</li>
+<li class="fragment">You can build your own model from building blocks</li>
+<li class="fragment">Everything is a probability distribution
+<ul>
+<li class="fragment">Hypothesis testing</li>
+<li class="fragment">Model comparison</li>
+<li class="fragment">All reduce down to statements about a distribution</li>
+
+</ul></li>
+<li class="fragment">Better convergence (under some conditions)</li>
+
+</ul>
+
+</section>
+<section id="slide-org96ea0ef">
+<h3 id="org96ea0ef">Disadvantages of Bayesian methods</h3>
+<ul>
+<li class="fragment">You gotta want it</li>
+<li class="fragment">Building models from scratch is difficult</li>
+
+</ul>
+
+</section>
+<section id="slide-org78dacfd">
+<h3 id="org78dacfd">A Bayesian example</h3>
+<pre class="example" style="font-size:50%">
+data {
+  int&lt;lower=0&gt; N; // # of rats
+  int&lt;lower=0&gt; T; // # of observations
+  real x[T];      // Days elapsed
+  real y[N,T];    // Weights
+}
+parameters {
+  real alpha[N];  // Intercept
+  real beta[N];   // Slope
+
+  real mu_alpha;
+  // ...
+}
+model {
+  mu_alpha ~ normal(0, 100);
+  // ...
+  alpha ~ normal(mu_alpha, sigma_alpha);
+  beta ~ normal(mu_beta, sigma_beta);
+  for (n in 1:N)
+    for (t in 1:T)
+      y[n,t] ~ normal(alpha[n] + beta[n] * x[t], sigma_y);
+
+}
+</pre>
+
+</section>
+</section>
+<section>
+<section id="slide-org7ffd924">
+<h2 id="org7ffd924">Resources</h2>
+<ul>
+<li class="fragment">Books
+<ul>
+<li class="fragment">Bates 2010, “lme4: Mixed effects modeling with R” (<a href="http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf">link</a>)</li>
+<li class="fragment">Gelman and Hill (2006) “Data Analysis Using Regression and Multilevel/Hierarchical Models” (<a href="https://www.amazon.co.uk/Analysis-Regression-Multilevel-Hierarchical-Analytical/dp/052168689X/">amazon</a>)</li>
+<li class="fragment">Kruschke (2010/2014) “Doing Bayesian data analysis” (<a href="https://www.amazon.co.uk/Doing-Bayesian-Data-Analysis-Second/dp/B013F5JN72/">amazon</a>)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section >
+
+<ul>
+<li class="fragment">Articles
+<ul>
+<li class="fragment">Baayen et al 2007 “<a href="http://www.sfs.uni-tuebingen.de/~hbaayen/publications/baayenDavidsonBates.pdf">Mixed-effects modeling with crossed random effects for subjects and items</a>”</li>
+<li class="fragment">Gorman 2009 “<a href="http://repository.upenn.edu/ircs_reports/202/">Hierarchical regression modeling for language research</a>”</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section >
+
+<ul>
+<li class="fragment">Web resources
+<ul>
+<li class="fragment">R-focused mailing lists: <a href="https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models">R-sig-ME</a> and <a href="https://mailman.ucsd.edu/mailman/listinfo/ling-r-lang-l">R-lang</a></li>
+<li class="fragment"><a href="https://stats.stackexchange.com/">Crossvalidated</a></li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="https://aecay.github.io/leeds-modeling-workshop/revealjs/lib/js/head.min.js"></script>
+<script src="https://aecay.github.io/leeds-modeling-workshop/revealjs/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: true,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '', // null if client
+    id: '', // id, obtained from socket.io server
+    url: '' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: 'https://aecay.github.io/leeds-modeling-workshop/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }]
+});
+</script>
+</body>
+</html>
